@@ -1,0 +1,440 @@
+Asumiras el rol de un estudiante decadente de universidad (osea io xd)
+Te voy a pasar una plantilla de un Repository para que, siguiendo ésta plantilla, construllas una nueva clase Repository del modelo de la entidad dado,
+tambien debes tener en cuenta la tabla en la base de datos. 
+
+tabla en la base de datos = {
+CREATE TABLE yates (
+    matricula VARCHAR(20) PRIMARY KEY,
+    nombre VARCHAR(100) UNIQUE NOT NULL,
+    eslora DECIMAL(5, 2),
+    manga DECIMAL(5, 2),
+    calado DECIMAL(5, 2),
+    usuario_dueno_cedula VARCHAR(20) NOT NULL,
+    id_tipo INT,
+    empleado_cargo INT,
+    FOREIGN KEY (usuario_dueno_cedula) REFERENCES usuarios (cedula),
+    FOREIGN KEY (id_tipo) REFERENCES tipo_yate (id_tipo),
+    FOREIGN KEY (empleado_cargo) REFERENCES empleados (id_empleado)
+);
+
+}
+
+modelo de la entidad = 
+export class Yate {
+    #matricula;
+    #nombre;
+    #eslora;
+    #manga;
+    #calado;
+    #usuario_dueno_cedula;
+    #id_tipo;
+    #empleado_cargo;
+
+    constructor(yate = {}) {
+        // Validaciones duras como en la plantilla Usuario
+        if (
+            typeof yate.matricula !== "string" ||
+            typeof yate.nombre !== "string"
+        ) {
+            throw new Error("Información no ingresada correctamente");
+        }
+
+        this.matricula = yate.matricula ?? null;
+        this.nombre = yate.nombre ?? null;
+        this.eslora = yate.eslora ?? null;
+        this.manga = yate.manga ?? null;
+        this.calado = yate.calado ?? null;
+        this.usuario_dueno_cedula = yate.usuario_dueno_cedula ?? null;
+        this.id_tipo = yate.id_tipo ?? null;
+        this.empleado_cargo = yate.empleado_cargo ?? null;
+    }
+
+    // --- matricula ---
+    get matricula() {
+        return this.#matricula;
+    }
+    set matricula(value) {
+        if (value !== null && typeof value !== "string") {
+            throw new Error("La matrícula debe ser una cadena de texto");
+        }
+        this.#matricula = value;
+    }
+
+    // --- nombre ---
+    get nombre() {
+        return this.#nombre;
+    }
+    set nombre(value) {
+        if (value !== null && typeof value !== "string") {
+            throw new Error("El nombre debe ser una cadena de texto");
+        }
+        this.#nombre = value;
+    }
+
+    // --- eslora ---
+    get eslora() {
+        return this.#eslora;
+    }
+    set eslora(value) {
+        if (value !== null && typeof value !== "number") {
+            throw new Error("La eslora debe ser un número");
+        }
+        this.#eslora = value;
+    }
+
+    // --- manga ---
+    get manga() {
+        return this.#manga;
+    }
+    set manga(value) {
+        if (value !== null && typeof value !== "number") {
+            throw new Error("La manga debe ser un número");
+        }
+        this.#manga = value;
+    }
+
+    // --- calado ---
+    get calado() {
+        return this.#calado;
+    }
+    set calado(value) {
+        if (value !== null && typeof value !== "number") {
+            throw new Error("El calado debe ser un número");
+        }
+        this.#calado = value;
+    }
+
+    // --- usuario_dueno_cedula ---
+    get usuario_dueno_cedula() {
+        return this.#usuario_dueno_cedula;
+    }
+    set usuario_dueno_cedula(value) {
+        if (value !== null && typeof value !== "string") {
+            throw new Error("La cédula del dueño debe ser una cadena de texto");
+        }
+        this.#usuario_dueno_cedula = value;
+    }
+
+    // --- id_tipo ---
+    get id_tipo() {
+        return this.#id_tipo;
+    }
+    set id_tipo(value) {
+        if (value !== null && typeof value !== "number") {
+            throw new Error("El id_tipo debe ser un número");
+        }
+        this.#id_tipo = value;
+    }
+
+    // --- empleado_cargo ---
+    get empleado_cargo() {
+        return this.#empleado_cargo;
+    }
+    set empleado_cargo(value) {
+        if (value !== null && typeof value !== "number") {
+            throw new Error("El empleado_cargo debe ser un número");
+        }
+        this.#empleado_cargo = value;
+    }
+
+    // --- toJSON ---
+    toJSON() {
+        return {
+            matricula: this.#matricula,
+            nombre: this.#nombre,
+            eslora: this.#eslora,
+            manga: this.#manga,
+            calado: this.#calado,
+            usuario_dueno_cedula: this.#usuario_dueno_cedula,
+            id_tipo: this.#id_tipo,
+            empleado_cargo: this.#empleado_cargo,
+        };
+    }
+}
+
+}
+
+plantilla = {import { RepositoryBase } from "../RepositoryBase.js";
+import { TipoYate } from "../../model/TipoYate.js";
+import { pool } from "../config/mysql.config.db.js";
+import { str, int } from "../Validaciones.js";
+
+export class TipoYateMysqlRepository extends RepositoryBase {
+    async getAll() {
+        const [rows] = await pool.query("SELECT * FROM tipo_yate");
+
+        return rows.map(
+            (row) =>
+                new TipoYate({
+                    id_tipo: int(row.id_tipo),
+                    nombre: str(row.nombre),
+                    descripcion: row.descripcion ?? null,
+                })
+        );
+    }
+
+    async findById(id) {
+        console.log(int(id))
+        const [rows] = await pool.query(
+            "SELECT * FROM tipo_yate WHERE id_tipo = ?",
+            [int(id)]
+        );
+        return rows.length > 0 ? new TipoYate(rows[0]) : null;
+    }
+
+    async findByNombre(nombre) {
+        const [rows] = await pool.query(
+            "SELECT * FROM tipo_yate WHERE nombre = ?",
+            [nombre]
+        );
+        return rows.length > 0 ? new TipoYate(rows[0]) : null;
+    }
+
+    async save(tipoYate) {
+        const existente = await this.findByNombre(tipoYate.nombre);
+        if (existente) throw new Error("ERROR: El nombre del tipo ya existe.");
+
+        const [result] = await pool.query(
+            `
+            INSERT INTO tipo_yate (
+                nombre,
+                descripcion
+            ) VALUES ( ? ,  ? );
+        `,
+            [tipoYate.nombre, tipoYate.descripcion ?? null]
+        );
+
+        return result.affectedRows > 0
+            ? await this.findById(result.insertId)
+            : null;
+    }
+
+    async put(tipoYate) {
+        // verificar existencia
+        const existente = await this.findById(tipoYate.id_tipo);
+        if (!existente) throw new Error("ERROR: El tipo de yate no existe.");
+
+        // verificar nombre único si lo cambia
+        if (tipoYate.nombre && tipoYate.nombre !== existente.nombre) {
+            const repetido = await this.findByNombre(tipoYate.nombre);
+            if (repetido)
+                throw new Error(
+                    "ERROR: Ya existe un tipo de yate con ese nombre."
+                );
+        }
+
+        const sql = `
+            UPDATE tipo_yate
+            SET nombre = ?, descripcion = ?
+            WHERE id_tipo = ?
+        `;
+
+        const params = [
+            str(tipoYate.nombre),
+            tipoYate.descripcion ?? null,
+            int(tipoYate.id_tipo),
+        ];
+
+        const [result] = await pool.query(sql, params);
+        return result.affectedRows > 0;
+    }
+
+    async deleteById(id) {
+        const sql = "DELETE FROM tipo_yate WHERE id_tipo = ?";
+        const [result] = await pool.query(sql, [int(id)]);
+        return result.affectedRows > 0;
+    }
+}
+},
+{
+    import { RepositoryBase } from "../RepositoryBase.js";
+import { Amarre } from "../../model/Amarre.js";
+import { pool } from "../config/mysql.config.db.js";
+import { REPOSITORY } from "../../repository.config.js";
+import { date, int, str, float } from "../Validaciones.js";
+
+export class AmarreMysqlRepository extends RepositoryBase {
+    async getAll() {
+        const [rows] = await pool.query("SELECT * FROM amarres");
+        return rows.map(
+            (row) =>
+                new Amarre({
+                    num_amarre: int(row.num_amarre),
+                    id_zona: str(row.id_zona),
+                    usuario_propietario_cedula: str(
+                        row.usuario_propietario_cedula
+                    ),
+                    fecha_compra:
+                        date(row.fecha_compra) != null
+                            ? row.fecha_compra
+                            : null,
+                })
+        );
+    }
+
+    async findByNum(num_amarre) {
+        const [rows] = await pool.query(
+            "SELECT * FROM amarres WHERE num_amarre = ?",
+            [num_amarre]
+        );
+        return rows.length > 0 ? new Amarre(rows[0]) : null;
+    }
+
+    async getAllByPropietario(cedula) {
+        const [rows] = await pool.query(
+            "SELECT * FROM amarres WHERE usuario_propietario_cedula = ?",
+            [cedula]
+        );
+        return rows.map(
+            (row) =>
+                new Amarre({
+                    num_amarre: int(row.num_amarre),
+                    id_zona: str(row.id_zona),
+                    usuario_propietario_cedula: str(
+                        row.usuario_propietario_cedula
+                        // Transexual.
+                    ),
+                    fecha_compra:
+                        date(row.fecha_compra) != null
+                            ? row.fecha_compra
+                            : null,
+                })
+        );
+    }
+
+    async getAllByZona(id_zona) {
+        const [rows] = await pool.query(
+            "SELECT * FROM amarres WHERE id_zona = ?",
+            [id_zona]
+        );
+        return rows.map(
+            (row) =>
+                new Amarre({
+                    num_amarre: int(row.num_amarre),
+                    id_zona: str(row.id_zona),
+                    usuario_propietario_cedula: str(
+                        row.usuario_propietario_cedula
+                        // Transexual.
+                    ),
+                    fecha_compra:
+                        date(row.fecha_compra) != null
+                            ? row.fecha_compra
+                            : null,
+                })
+        );
+    }
+
+    async getAllByPropietario(cedula) {
+        const [rows] = await pool.query(
+            "SELECT * FROM amarres WHERE usuario_propietario_cedula = ?",
+            [cedula]
+        );
+        return rows.map(
+            (row) =>
+                new Amarre({
+                    num_amarre: int(row.num_amarre),
+                    id_zona: str(row.id_zona),
+                    usuario_propietario_cedula: str(
+                        row.usuario_propietario_cedula
+                        // Transexual.
+                    ),
+                    fecha_compra: date(row.fecha_compra),
+                })
+        );
+    }
+
+    async save(amarre) {
+        // num_amarre único
+        if (await this.findByNum(amarre.num_amarre)) {
+            throw new Error("ERROR: El número de amarre ya existe.");
+        }
+
+        // zona existente
+        const zona = await REPOSITORY.ZonaRepository.findById(amarre.id_zona);
+        if (!zona) throw new Error("ERROR: La zona no existe.");
+
+        // usuario propietario si viene
+        if (amarre.usuario_propietario_cedula) {
+            const usr = await REPOSITORY.UsuarioRepository.findById(
+                amarre.usuario_propietario_cedula
+            );
+            if (!usr)
+                throw new Error("ERROR: El usuario propietario no existe.");
+        }
+
+        // fecha válida si viene
+        if (amarre.fecha_compra && date(amarre.fecha_compra) === null) {
+            throw new Error("ERROR: Formato de fecha inválido.");
+        }
+
+        const num_amarre = amarre.num_amarre;
+        const id_zona = amarre.id_zona;
+        const usuario = amarre.usuario_propietario_cedula ?? null;
+        const fecha = amarre.fecha_compra ?? null;
+
+        const sql = `
+        INSERT INTO amarres (
+            num_amarre,
+            id_zona,
+            usuario_propietario_cedula,
+            fecha_compra
+        ) VALUES (?, ?, ?, ?);
+    `;
+
+        const [result] = await pool.query(sql, [
+            num_amarre,
+            id_zona,
+            usuario,
+            fecha,
+        ]);
+
+        return result.affectedRows > 0
+            ? await this.findByNum(num_amarre) // -> Devuelve un amarre si se logró hacer la insercion ñam ñam
+            : null; // -> se va al carajo aquí
+    }
+
+    /**
+     * Solo se puede actualizar el propietario y la fecha de compra.
+     * @param {*} amarre
+     */
+    async put(amarre) {
+        // usuario propietario si viene
+        if (amarre.usuario_propietario_cedula) {
+            const usr = await REPOSITORY.UsuarioRepository.findById(
+                amarre.usuario_propietario_cedula
+            );
+            if (!usr)
+                throw new Error("ERROR: El usuario propietario no existe.");
+        }
+
+        // fecha válida si viene
+        if (amarre.fecha_compra && date(amarre.fecha_compra) === null) {
+            throw new Error("ERROR: Formato de fecha inválido.");
+        }
+
+        const sql = `
+        UPDATE amarres
+        SET 
+            usuario_propietario_cedula = ?, 
+            fecha_compra = ?
+        WHERE num_amarre = ?
+    `;
+
+        const params = [
+            str(amarre.usuario_propietario_cedula),
+            amarre.fecha_compra ? date(amarre.fecha_compra) : null,
+            int(amarre.num_amarre),
+        ];
+
+        const [result] = await pool.query(sql, params);
+        return result.affectedRows > 0;
+    }
+
+    async deleteByNum(num) {
+        const sql = "DELETE FROM amarres WHERE num_amarre = ?";
+        const [result] = await pool.query(sql, [int(num)]);
+        return result.affectedRows > 0;
+    }
+}
+
+}

@@ -1,0 +1,472 @@
+Asumiras el rol de un estudiante decadente de universidad (osea io xd)
+Te voy a pasar una plantilla de un Repository para que, siguiendo ésta plantilla, construllas un nuevo test repository dado,
+tambien debes tener en cuenta la tabla en la base de datos. 
+
+tabla en la base de datos = {
+
+CREATE TABLE yates (
+    matricula VARCHAR(20) PRIMARY KEY,
+    nombre VARCHAR(100) UNIQUE NOT NULL,
+    eslora DECIMAL(5, 2),
+    manga DECIMAL(5, 2),
+    calado DECIMAL(5, 2),
+    usuario_dueno_cedula VARCHAR(20) NOT NULL,
+    id_tipo INT,
+    empleado_cargo INT,
+    FOREIGN KEY (usuario_dueno_cedula) REFERENCES usuarios (cedula),
+    FOREIGN KEY (id_tipo) REFERENCES tipo_yate (id_tipo),
+    FOREIGN KEY (empleado_cargo) REFERENCES empleados (id_empleado)
+);
+}
+
+repository = 
+
+{import { RepositoryBase } from "../RepositoryBase.js";
+import { Yate } from "../../model/Yate.js";
+import { pool } from "../config/mysql.config.db.js";
+import { REPOSITORY } from "../../repository.config.js"; // Necesario para buscar foráneas (Usuario y TipoYate)
+import { str, int, float } from "../Validaciones.js";
+
+// La tabla YATE se asume que se ve algo así (basado en el modelo):
+// CREATE TABLE yate (
+//     matricula VARCHAR(20) PRIMARY KEY,
+//     nombre VARCHAR(50) NOT NULL,
+//     eslora FLOAT NOT NULL,
+//     manga FLOAT NOT NULL,
+//     calado FLOAT NOT NULL,
+//     usuario_dueno_cedula VARCHAR(20) NULL,  // FK a Usuario(cedula)
+//     id_tipo INT NULL,                      // FK a TipoYate(id_tipo)
+//     empleado_cargo INT NULL                // FK a Empleado(id_empleado)
+// );
+
+export class YateMysqlRepository extends RepositoryBase {
+
+    // --- Mapeo de fila de DB a objeto Yate ---
+    _mapRowToYate(row) {
+        if (!row) return null;
+        return new Yate({
+            matricula: str(row.matricula),
+            nombre: str(row.nombre),
+            eslora: float(row.eslora),
+            manga: float(row.manga),
+            calado: float(row.calado),
+            usuario_dueno_cedula: row.usuario_dueno_cedula ?? null,
+            id_tipo: row.id_tipo ? int(row.id_tipo) : null,
+            empleado_cargo: row.empleado_cargo ? int(row.empleado_cargo) : null,
+        });
+    }
+
+    // ====================================
+    //       MÉTODOS DE LECTURA (GET)
+    // ====================================
+
+    async getAll() {
+        const [rows] = await pool.query("SELECT * FROM yate");
+        return rows.map(this._mapRowToYate);
+    }
+
+    // Usamos 'matricula' como PK para buscar (análogo a findById)
+    async findByMatricula(matricula) { 
+        const [rows] = await pool.query(
+            "SELECT * FROM yate WHERE matricula = ?",
+            [str(matricula)]
+        );
+        return rows.length > 0 ? this._mapRowToYate(rows[0]) : null;
+    }
+
+    // Buscar por nombre (aunque no sea único)
+    async findByNombre(nombre) {
+        const [rows] = await pool.query(
+            "SELECT * FROM yate WHERE nombre = ?",
+            [str(nombre)]
+        );
+        // Retornamos el primero que encuentre o null
+        return rows.length > 0 ? this._mapRowToYate(rows[0]) : null;
+    }
+
+    // ====================================
+    //      MÉTODO DE INSERCIÓN (SAVE)
+    // ====================================
+
+    async save(yate) {
+        // 1. Verificar Matricula Única
+        const existente = await this.findByMatricula(yate.matricula);
+        if (existente) throw new Error("ERROR: Ya existe un yate con esta matrícula.");
+
+        // 2. Verificar Foráneas (Owner y Tipo de Yate)
+        // Chequeo si el dueño existe (si se proporciona)
+        if (yate.usuario_dueno_cedula) {
+            const dueno = await REPOSITORY.UsuarioRepository.findById(yate.usuario_dueno_cedula);
+            if (!dueno) throw new Error("ERROR: La cédula del dueño no existe en la base de datos.");
+        }
+
+        // Chequeo si el tipo de yate existe (si se proporciona)
+        if (yate.id_tipo) {
+            const tipo = await REPOSITORY.TipoYateRepository.findById(yate.id_tipo);
+            if (!tipo) throw new Error("ERROR: El ID de tipo de yate no existe.");
+        }
+        
+        // El empleado_cargo lo omitimos por ahora, asumiendo que no es crítico para el MVP
+
+        const sql = `
+            INSERT INTO yate (
+                matricula, nombre, eslora, manga, calado,
+                usuario_dueno_cedula, id_tipo, empleado_cargo
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const params = [
+            str(yate.matricula),
+            str(yate.nombre),
+            float(yate.eslora),
+            float(yate.manga),
+            float(yate.calado),
+            yate.usuario_dueno_cedula ?? null,
+            yate.id_tipo ?? null,
+            yate.empleado_cargo ?? null,
+        ];
+
+        const [result] = await pool.query(sql, params);
+
+        return result.affectedRows > 0
+            ? await this.findByMatricula(yate.matricula) // Buscamos por PK (matricula)
+            : null;
+    }
+
+    // ====================================
+    //      MÉTODO DE ACTUALIZACIÓN (PUT)
+    // ====================================
+    
+    // Asumimos que podemos actualizar todo menos la matrícula.
+    async put(yate) {
+        // 1. Verificar existencia (por matrícula)
+        const existente = await this.findByMatricula(yate.matricula);
+        if (!existente) throw new Error("ERROR: El yate con esta matrícula no existe.");
+        
+        // 2. Verificar Foráneas
+        // Solo verificamos si los valores se están enviando, no es necesario verificar si son null
+        if (yate.usuario_dueno_cedula && yate.usuario_dueno_cedula !== existente.usuario_dueno_cedula) {
+            const dueno = await REPOSITORY.UsuarioRepository.findById(yate.usuario_dueno_cedula);
+            if (!dueno) throw new Error("ERROR: La cédula del dueño no existe.");
+        }
+
+        if (yate.id_tipo && yate.id_tipo !== existente.id_tipo) {
+            const tipo = await REPOSITORY.TipoYateRepository.findById(yate.id_tipo);
+            if (!tipo) throw new Error("ERROR: El ID de tipo de yate no existe.");
+        }
+        
+        // 3. Ejecutar UPDATE
+        const sql = `
+            UPDATE yate
+            SET 
+                nombre = ?, eslora = ?, manga = ?, calado = ?,
+                usuario_dueno_cedula = ?, id_tipo = ?, empleado_cargo = ?
+            WHERE matricula = ?
+        `;
+        
+        // Usamos los valores nuevos (yate) si existen, si no, mantenemos los originales (existente)
+        const params = [
+            str(yate.nombre ?? existente.nombre),
+            float(yate.eslora ?? existente.eslora),
+            float(yate.manga ?? existente.manga),
+            float(yate.calado ?? existente.calado),
+            yate.usuario_dueno_cedula ?? existente.usuario_dueno_cedula,
+            yate.id_tipo ?? existente.id_tipo,
+            yate.empleado_cargo ?? existente.empleado_cargo,
+            str(yate.matricula), // WHERE clause
+        ];
+        
+        const [result] = await pool.query(sql, params);
+        return result.affectedRows > 0;
+    }
+
+    // ====================================
+    //      MÉTODO DE ELIMINACIÓN (DELETE)
+    // ====================================
+
+    async deleteByMatricula(matricula) {
+        const sql = "DELETE FROM yate WHERE matricula = ?";
+        const [result] = await pool.query(sql, [str(matricula)]);
+        return result.affectedRows > 0;
+    }
+}
+}
+
+plantillas = {
+    import { Zona } from "../src/model/Zona.js";
+import { Usuario } from "../src/model/Usuario.js";
+import { Amarre } from "../src/model/Amarre.js";
+
+import { REPOSITORY } from "../src/repository.config.js";
+import { pool } from "../src/repository/config/mysql.config.db.js";
+
+// LIMPIEZA PARA EMPEZAR FRESCO
+await pool.query("DELETE FROM amarres");
+await pool.query("DELETE FROM usuarios");
+await pool.query("DELETE FROM zonas");
+
+console.log("🧹 Base de datos limpia\n");
+
+// ===============================
+//   INSERTAR DOS ZONAS
+// ===============================
+
+console.log("=== INSERTANDO ZONAS ===\n");
+
+try {
+    console.log(
+        await REPOSITORY.ZonaRepository.save(
+            new Zona({
+                id_zona: "A",
+                cuota_administracion: 200000.0,
+                capacidad: 30,
+                profundidad: 10,
+                dim_max_eslora: 40,
+                dim_max_manga: 15,
+                dim_max_calado: 5,
+                dim_min_eslora: 10,
+                dim_min_manga: 5,
+                dim_min_calado: 2,
+            })
+        )
+    );
+} catch (e) {
+    console.error("❌ Error inesperado:", e.message);
+}
+
+try {
+    console.log(
+        await REPOSITORY.ZonaRepository.save(
+            new Zona({
+                id_zona: "B",
+                cuota_administracion: 180000.0,
+                capacidad: 20,
+                profundidad: 8,
+                dim_max_eslora: 30,
+                dim_max_manga: 12,
+                dim_max_calado: 4,
+                dim_min_eslora: 9,
+                dim_min_manga: 4,
+                dim_min_calado: 2,
+            })
+        )
+    );
+} catch (e) {
+    console.error("❌ Error inesperado:", e.message);
+}
+
+console.log("\n📌 Zonas insertadas correctamente.\n");
+
+// ===============================
+//   INSERTAR DOS USUARIOS
+// ===============================
+
+console.log("=== INSERTANDO USUARIOS ===\n");
+
+try {
+    console.log(
+        await REPOSITORY.UsuarioRepository.save(
+            new Usuario({
+                cedula: "10101010",
+                nombre: "Nico Doom",
+                direccion: "Kr 1 # 2 - 3",
+                telefono: "3000000001",
+                fecha_vinculacion: "2021-05-10",
+                contrasena: "abc123",
+                mail: "nico@example.com",
+                tipo_usuario: "SOCIO",
+            })
+        )
+    );
+} catch (e) {
+    console.error("❌ Error inesperado en usuario 1:", e.message);
+}
+
+try {
+    console.log(
+        await REPOSITORY.UsuarioRepository.save(
+            new Usuario({
+                cedula: "20202020",
+                nombre: "Laura Hell",
+                direccion: "Cll 45 # 12 - 44",
+                telefono: "3000000002",
+                fecha_vinculacion: "2022-01-01",
+                contrasena: "pass456",
+                mail: "laura@example.com",
+                tipo_usuario: "SOCIO",
+            })
+        )
+    );
+} catch (e) {
+    console.error("❌ Error inesperado en usuario 2:", e.message);
+}
+
+console.log("\n📌 Usuarios insertados.\n");
+
+// ===============================
+//   PROBAR AMARRES
+// ===============================
+
+console.log("=== INSERTANDO AMARRES ===\n");
+
+// INSERCIÓN CORRECTA
+try {
+    console.log(
+        await REPOSITORY.AmarreRepository.save(
+            new Amarre({
+                num_amarre: 1,
+                id_zona: "A",
+                usuario_propietario_cedula: "10101010",
+                fecha_compra: "2023-01-10",
+            })
+        )
+    );
+} catch (e) {
+    console.error("❌ Error inesperado al insertar amarre 1:", e.message);
+}
+
+// INSERCIÓN CON CAMPOS OPCIONALES (solo num_amarre + zona)
+try {
+    console.log(
+        await REPOSITORY.AmarreRepository.save(
+            new Amarre({
+                num_amarre: 2,
+                id_zona: "B",
+            })
+        )
+    );
+} catch (e) {
+    console.error("❌ Error inesperado al insertar amarre 2:", e.message);
+}
+
+// ERROR ESPERADO: zona inexistente
+try {
+    await REPOSITORY.AmarreRepository.save(
+        new Amarre({
+            num_amarre: 3,
+            id_zona: "NOEXISTE",
+        })
+    );
+} catch (e) {
+    console.error("✔️ Error esperado:", e.message);
+}
+
+// ===============================
+//   PROBAR ACTUALIZACIÓN (PUT)
+// ===============================
+
+console.log("\n=== ACTUALIZANDO AMARRE ===\n");
+
+// Cambiar propietario y fecha
+try {
+    const updated = await REPOSITORY.AmarreRepository.put(
+        new Amarre({
+            num_amarre: 2,
+            usuario_propietario_cedula: "20202020",
+            fecha_compra: "2024-02-10",
+        })
+    );
+    console.log("PUT result:", updated);
+} catch (e) {
+    console.error("❌ Error inesperado en put:", e.message);
+}
+
+// ===============================
+//   PROBAR DELETE
+// ===============================
+
+console.log("\n=== ELIMINANDO AMARRE 1 ===\n");
+
+try {
+    console.log(await REPOSITORY.AmarreRepository.deleteByNum(1));
+} catch (e) {
+    console.error("❌ Error eliminando amarre:", e.message);
+}
+
+// ===============================
+//   CONSULTA FINAL
+// ===============================
+
+console.log("\n📌 AMARRES FINALES EN BD:");
+let amarres = await REPOSITORY.AmarreRepository.getAll();
+amarres.forEach((a) => console.log(a.toJSON()));
+
+// ===============================
+//   ELIMINAR USUARIOS (PRUEBA)
+// ===============================
+
+console.log("\n=== ELIMINANDO USUARIOS ===\n");
+
+try {
+    console.log(await REPOSITORY.UsuarioRepository.delete("10101010"));
+} catch (e) {
+    console.error(e);
+}
+
+try {
+    console.log(await REPOSITORY.UsuarioRepository.delete("20202020"));
+} catch (e) {
+    console.error(e);
+}
+
+console.log("\n🏁 TEST COMPLETO FINALIZADO.\n");
+
+}, {
+    import { Zona } from "../src/model/Zona.js";
+import { REPOSITORY } from "../src/repository.config.js";
+
+// Elimina todas las zonas para iniciar limpito
+import { pool } from "../src/repository/config/mysql.config.db.js";
+await pool.query("DELETE FROM zonas");
+
+/* INSERCIÓN CON ERRORES */
+try {
+    console.log(
+        await REPOSITORY.ZonaRepository.save(
+            new Zona({
+                id_zona: "A",                // OK
+                cuota_administracion: "nope", // ERROR: debería ser float
+                capacidad: -20,               // ERROR: capacidad inválida
+                profundidad: null,
+                dim_max_eslora: 20,
+                dim_max_manga: 10,
+                dim_max_calado: 5,
+                dim_min_eslora: 15,
+                dim_min_manga: 8,
+                dim_min_calado: 3,
+            })
+        )
+    );
+} catch (error) {
+    console.error("❌ Error esperado en inserción mala:", error.message);
+}
+
+/* INSERCIÓN NORMAL */
+try {
+    console.log(
+        await REPOSITORY.ZonaRepository.save(
+            new Zona({
+                id_zona: "Z",
+                cuota_administracion: 150000.0,
+                capacidad: 25,
+                profundidad: 12.5,
+                dim_max_eslora: 40.0,
+                dim_max_manga: 15.0,
+                dim_max_calado: 6.0,
+                dim_min_eslora: 10.0,
+                dim_min_manga: 5.0,
+                dim_min_calado: 2.0,
+            })
+        )
+    );
+} catch (error) {
+    console.error("❌ Error inesperado al insertar zona correcta:", error.message);
+}
+
+/* PRIMERA IMPRESIÓN */
+let zonas = await REPOSITORY.ZonaRepository.getAll();
+
+console.log("📌 Zonas en la BD:");
+zonas.forEach((z) => console.log(z.toJSON()));
+
+}

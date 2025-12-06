@@ -1,0 +1,17 @@
+127.0.0.1 - - [26/Oct/2025:15:24:37 -0500] "GET / HTTP/1.1" 200 11239
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /tomcat.css HTTP/1.1" 200 5584
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /tomcat.svg HTTP/1.1" 200 67795
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /favicon.ico HTTP/1.1" 200 8192
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /bg-nav.png HTTP/1.1" 200 1401
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /bg-upper.png HTTP/1.1" 200 3103
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /asf-logo-wide.svg HTTP/1.1" 200 7089
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /bg-button.png HTTP/1.1" 200 713
+127.0.0.1 - - [26/Oct/2025:15:24:38 -0500] "GET /bg-middle.png HTTP/1.1" 200 1918
+127.0.0.1 - - [26/Oct/2025:15:24:42 -0500] "GET /manager/status HTTP/1.1" 401 2576
+127.0.0.1 - - [26/Oct/2025:15:24:50 -0500] "GET /manager/status HTTP/1.1" 401 2576
+127.0.0.1 - - [26/Oct/2025:15:26:53 -0500] "GET /manager/status HTTP/1.1" 401 2576
+127.0.0.1 - admin [26/Oct/2025:15:26:59 -0500] "GET /manager/status HTTP/1.1" 200 4834
+127.0.0.1 - - [26/Oct/2025:15:27:00 -0500] "GET /manager/css/manager.css HTTP/1.1" 200 2806
+127.0.0.1 - - [26/Oct/2025:15:27:00 -0500] "GET /manager/images/tomcat.svg HTTP/1.1" 200 67795
+127.0.0.1 - - [26/Oct/2025:15:27:00 -0500] "GET /manager/images/asf-logo.svg HTTP/1.1" 200 7089
+127.0.0.1 - admin [26/Oct/2025:15:27:04 -0500] "GET /manager/html/list HTTP/1.1" 200 18109
