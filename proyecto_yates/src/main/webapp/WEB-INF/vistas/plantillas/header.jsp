@@ -1,0 +1,21 @@
+<%-- 
+    Document   : header
+    Created on : 6/12/2025, 6:15:23 a. m.
+    Author     : xhua
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>𝓙𝓪𝓶 𝓢𝓪𝓵𝓶𝓸𝓷</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+            />
+        <link rel="stylesheet" href="/css/main.css" />
+    </head>

@@ -1,0 +1,49 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ include file = './plantillas/header.jsp'%>
+
+<div class="container py-5" style="max-width: 600px;">
+    <h1 class="mb-4 text-center fw-semibold">Registrar Socio</h1>
+
+    <form action="LoginServlet" method="POST" class="needs-validation" novalidate>
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="cedula" class="form-label">Cédula</label>
+            <input type="text" id="cedula" name="cedula" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="fecha_vinculacion" class="form-label">Fecha de Vinculación</label>
+            <input type="date" id="fecha_vinculacion" name="fecha_vinculacion" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" id="direccion" name="direccion" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Número telefónico</label>
+            <input type="number" id="telefono" name="telefono" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="contraseña" class="form-label">Contraseña</label>
+            <input type="password" id="contraseña" name="contraseña" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2">Enviar</button>
+    </form>
+</div>
+
+<%@ include file = './plantillas/footer.jsp'%>
