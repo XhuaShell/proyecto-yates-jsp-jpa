@@ -10,6 +10,13 @@ public class AmarreEntity {
     private String usuario_propietario_cedula;
     private LocalDate fecha_compra;
 
+    public AmarreEntity(Long num_amarre, char id_zona, String usuario_propietario_cedula, LocalDate fecha_compra) {
+        this.num_amarre = num_amarre;
+        this.id_zona = id_zona;
+        this.usuario_propietario_cedula = usuario_propietario_cedula;
+        this.fecha_compra = fecha_compra;
+    }
+    
     public char getId_zona() {
         return id_zona;
     }
