@@ -7,7 +7,7 @@ public class UsuarioLoginDTO {
 
     public UsuarioLoginDTO() {
     }
-
+     
     public UsuarioLoginDTO(String email, String contrasena) {
         this.email = email;
         this.contrasena = contrasena;
