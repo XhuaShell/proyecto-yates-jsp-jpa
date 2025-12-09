@@ -4,12 +4,21 @@
  */
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /**
  *
  * @author krate
  */
+@Entity
+@Table(name="empleados")
 public class EmpleadoEntity {
-    
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id_empleado;
     private String cedula;
     private String nombre;

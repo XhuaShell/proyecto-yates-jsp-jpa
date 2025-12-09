@@ -4,14 +4,25 @@
  */
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author krate
  */
+
+@Entity
+@Table(name="asignacion_amarre") 
 public class AsignacionAmarreEntity {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id_asignacion;
+    
     private String matricula_yate;
     private Long num_amarre;
     private LocalDateTime fecha_inicio;

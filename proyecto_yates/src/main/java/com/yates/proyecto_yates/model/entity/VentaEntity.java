@@ -1,5 +1,10 @@
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 /*
@@ -11,7 +16,12 @@ import java.time.LocalDate;
  *
  * @author krate
  */
+@Entity
+@Table(name="ventas")
 public class VentaEntity {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    
     private Long num_venta;
     private LocalDate fecha;
     private double monto; 

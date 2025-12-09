@@ -1,13 +1,24 @@
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 
-
+@Entity
+@Table(name="amarres")
 public class AmarreEntity {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long num_amarre;
+    
     private char id_zona;
     private String usuario_propietario_cedula;
+    
     private LocalDate fecha_compra;
 
     public AmarreEntity(Long num_amarre, char id_zona, String usuario_propietario_cedula, LocalDate fecha_compra) {
