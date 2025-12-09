@@ -1,11 +1,14 @@
 com/yates/proyecto_yates/model/entity/UsuarioEntity.class
+com/yates/proyecto_yates/model/dto/EmpleadoDTO.class
 com/yates/proyecto_yates/model/dto/UsuarioLoginDTO.class
 com/yates/proyecto_yates/controller/ZonaServlet.class
+com/yates/proyecto_yates/model/dto/VentaDTO.class
 com/yates/proyecto_yates/controller/RegisterServlet.class
 com/yates/proyecto_yates/controller/YateServlet.class
 com/yates/proyecto_yates/controller/IndexServlet.class
 com/yates/proyecto_yates/model/dto/ZonaDTO.class
 com/yates/proyecto_yates/model/entity/EmpleadoEntity.class
+com/yates/proyecto_yates/model/dto/UsarDTO.class
 com/yates/proyecto_yates/model/entity/AsignacionAmarreEntity.class
 com/yates/proyecto_yates/model/entity/ZonaEntity.class
 com/yates/proyecto_yates/model/entity/AmarreEntity.class
@@ -18,6 +21,9 @@ com/yates/proyecto_yates/model/entity/TipoYateEntity.class
 com/yates/proyecto_yates/model/entity/UsarEntity.class
 com/yates/proyecto_yates/controller/AsignacionServlet.class
 com/yates/proyecto_yates/model/repositorys/config/JpaUtil.class
+com/yates/proyecto_yates/model/dto/AmarreDTO.class
+com/yates/proyecto_yates/model/dto/TipoYateDTO.class
+com/yates/proyecto_yates/model/dto/AsignacionAmarreDTO.class
 com/yates/proyecto_yates/util/mappers/UsuarioMapper.class
 com/yates/proyecto_yates/controller/SocioServlet.class
 com/yates/proyecto_yates/model/dto/UsuarioDTO.class
@@ -26,4 +32,5 @@ com/yates/proyecto_yates/model/repositorys/UsuarioRepository.class
 com/yates/proyecto_yates/model/entity/VentaEntity.class
 com/yates/proyecto_yates/service/UsuarioService.class
 com/yates/proyecto_yates/controller/Hola.class
+com/yates/proyecto_yates/model/dto/YateDTO.class
 com/yates/proyecto_yates/util/exceptions/UsuarioNoEncontradoException.class
