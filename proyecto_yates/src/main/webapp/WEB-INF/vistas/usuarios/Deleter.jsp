@@ -13,7 +13,7 @@
 <body>
   <h1>Eliminar Socio</h1>
 
-  <form action="${pageContext.request.contextPath}/SocioServlet?action=delete" method="POST">
+  <form action="${pageContext.request.contextPath}/UsuarioServlet?action=delete" method="POST">
     <label for="codigo">Código de socio:</label>
     <input type="text" id="codigo" name="codigo" required><br><br>
 

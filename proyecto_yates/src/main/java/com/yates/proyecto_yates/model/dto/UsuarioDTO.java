@@ -29,6 +29,18 @@ public class UsuarioDTO {
         this.tipoUsuario = tipoUsuario;
     }
 
+    public UsuarioDTO(String cedula, String nombre, String direccion, String telefono, String mail, LocalDate fechaVinculacion, TipoUsuario tipoUsuario, String contrasena) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.mail = mail;
+        this.fechaVinculacion = fechaVinculacion;
+        this.tipoUsuario = tipoUsuario;
+        this.contrasena = contrasena;
+    }
+    
+    
     public static UsuarioDTO fromEntity(UsuarioEntity entity) {
         if (entity == null) {
             return null;
@@ -63,7 +75,7 @@ public class UsuarioDTO {
         }
 
         entity.setTipoUsuario(this.tipoUsuario);
-
+        entity.setContrasena(this.contrasena); 
         return entity;
     }
 
@@ -137,4 +149,12 @@ public class UsuarioDTO {
         this.tipoUsuario = tipoUsuario;
     }
 
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+    
 }
