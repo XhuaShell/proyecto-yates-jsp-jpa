@@ -1,55 +1,38 @@
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-
+import java.util.List;
 
 @Entity
-@Table(name="amarres")
+@Table(name = "amarres")
 public class AmarreEntity {
-    
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num_amarre;
-    
-    private char id_zona;
-    private String usuario_propietario_cedula;
-    
-    private LocalDate fecha_compra;
 
-    public AmarreEntity(Long num_amarre, char id_zona, String usuario_propietario_cedula, LocalDate fecha_compra) {
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_zona", nullable = false)
+    private ZonaEntity zona;
+
+    @OneToMany(mappedBy = "amarre")
+    private List<VentaEntity> historialVentas;
+
+    public AmarreEntity() {
+    }
+
+    public AmarreEntity(Long num_amarre, ZonaEntity zona) {
         this.num_amarre = num_amarre;
-        this.id_zona = id_zona;
-        this.usuario_propietario_cedula = usuario_propietario_cedula;
-        this.fecha_compra = fecha_compra;
-    }
-    
-    public char getId_zona() {
-        return id_zona;
-    }
-
-    public void setId_zona(char id_zona) {
-        this.id_zona = id_zona;
-    }
-
-    public String getUsuario_propietario_cedula() {
-        return usuario_propietario_cedula;
-    }
-
-    public void setUsuario_propietario_cedula(String usuario_propietario_cedula) {
-        this.usuario_propietario_cedula = usuario_propietario_cedula;
-    }
-
-    public LocalDate getFecha_compra() {
-        return fecha_compra;
-    }
-
-    public void setFecha_compra(LocalDate fecha_compra) {
-        this.fecha_compra = fecha_compra;
+        this.zona = zona;
     }
 
     public Long getNum_amarre() {
@@ -59,4 +42,13 @@ public class AmarreEntity {
     public void setNum_amarre(Long num_amarre) {
         this.num_amarre = num_amarre;
     }
+
+    public ZonaEntity getZona() {
+        return zona;
+    }
+
+    public void setZona(ZonaEntity zona) {
+        this.zona = zona;
+    }
+
 }

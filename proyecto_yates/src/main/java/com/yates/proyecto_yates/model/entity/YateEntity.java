@@ -1,32 +1,47 @@
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="yates")
+@Table(name = "yates")
 public class YateEntity {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private String matricula;
-    private String nombre;
-    private double eslora;
-    private double manga;
-    private double calado;
-    private String usuario_dueno_cedula;
-    private Long id_tipo;
 
-    public YateEntity(String matricula, String nombre, double eslora, double manga, double calado, String usuario_dueno_cedula, Long id_tipo) {
+    @Id
+    private String matricula;
+    
+    @Column(unique = true)
+    private String nombre;
+    
+    private String color;
+    private Double eslora;
+    private Double manga;
+    private Double calado;
+
+    @ManyToOne
+    @JoinColumn(name = "cedula_dueno", referencedColumnName = "cedula", nullable = true)
+    private UsuarioEntity dueno;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "num_tipo_yate", nullable = false)
+    private TipoYateEntity tipoYate;
+
+    public YateEntity() {
+    }
+
+    public YateEntity(String matricula, String nombre, String color, Double eslora, Double manga, Double calado, UsuarioEntity dueno, TipoYateEntity tipoYate) {
         this.matricula = matricula;
         this.nombre = nombre;
+        this.color = color;
         this.eslora = eslora;
         this.manga = manga;
         this.calado = calado;
-        this.usuario_dueno_cedula = usuario_dueno_cedula;
-        this.id_tipo = id_tipo;
+        this.dueno = dueno;
+        this.tipoYate = tipoYate;
     }
 
     public String getMatricula() {
@@ -45,45 +60,52 @@ public class YateEntity {
         this.nombre = nombre;
     }
 
-    public double getEslora() {
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Double getEslora() {
         return eslora;
     }
 
-    public void setEslora(double eslora) {
+    public void setEslora(Double eslora) {
         this.eslora = eslora;
     }
 
-    public double getManga() {
+    public Double getManga() {
         return manga;
     }
 
-    public void setManga(double manga) {
+    public void setManga(Double manga) {
         this.manga = manga;
     }
 
-    public double getCalado() {
+    public Double getCalado() {
         return calado;
     }
 
-    public void setCalado(double calado) {
+    public void setCalado(Double calado) {
         this.calado = calado;
     }
 
-    public String getUsuario_dueno_cedula() {
-        return usuario_dueno_cedula;
+    public UsuarioEntity getDueno() {
+        return dueno;
     }
 
-    public void setUsuario_dueno_cedula(String usuario_dueno_cedula) {
-        this.usuario_dueno_cedula = usuario_dueno_cedula;
+    public void setDueno(UsuarioEntity dueno) {
+        this.dueno = dueno;
     }
 
-    public Long getId_tipo() {
-        return id_tipo;
+    public TipoYateEntity getTipoYate() {
+        return tipoYate;
     }
 
-    public void setId_tipo(Long id_tipo) {
-        this.id_tipo = id_tipo;
+    public void setTipoYate(TipoYateEntity tipoYate) {
+        this.tipoYate = tipoYate;
     }
-    
-    
+
 }

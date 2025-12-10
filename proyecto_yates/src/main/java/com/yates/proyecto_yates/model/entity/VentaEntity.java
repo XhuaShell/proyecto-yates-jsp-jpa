@@ -1,41 +1,51 @@
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author krate
- */
 @Entity
-@Table(name="ventas")
+@Table(name = "ventas")
 public class VentaEntity {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    
-    private Long num_venta;
-    private LocalDate fecha;
-    private double monto; 
-    private Long num_amarre;
-    private String vendedor_cedula;
-    private String comprador_cedula;
 
-    public VentaEntity(Long num_venta, LocalDate fecha, double monto, Long num_amarre, String vendedor_cedula, String comprador_cedula) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long num_venta;
+
+    private Double monto;
+    private LocalDate fecha;
+
+    // Relación con AMARRES -> FK num_amarre
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "num_amarre", nullable = false)
+    private AmarreEntity amarre;
+
+    // Relación con USUARIOS -> FK codigo_vendedor
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cedula_vendedor", referencedColumnName = "cedula",  nullable = false)
+    private UsuarioEntity vendedor;
+
+    // Relación con USUARIOS -> FK codigo_comprador
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cedula_comprador", referencedColumnName = "cedula", nullable = false)
+    private UsuarioEntity comprador;
+
+    public VentaEntity() {
+    }
+
+    public VentaEntity(Long num_venta, Double monto, LocalDate fecha, AmarreEntity amarreVendido, UsuarioEntity vendedor, UsuarioEntity comprador) {
         this.num_venta = num_venta;
-        this.fecha = fecha;
         this.monto = monto;
-        this.num_amarre = num_amarre;
-        this.vendedor_cedula = vendedor_cedula;
-        this.comprador_cedula = comprador_cedula;
+        this.fecha = fecha;
+        this.amarre = amarreVendido;
+        this.vendedor = vendedor;
+        this.comprador = comprador;
     }
 
     public Long getNum_venta() {
@@ -46,6 +56,14 @@ public class VentaEntity {
         this.num_venta = num_venta;
     }
 
+    public Double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(Double monto) {
+        this.monto = monto;
+    }
+
     public LocalDate getFecha() {
         return fecha;
     }
@@ -54,36 +72,27 @@ public class VentaEntity {
         this.fecha = fecha;
     }
 
-    public double getMonto() {
-        return monto;
+    public AmarreEntity getAmarre() {
+        return amarre;
     }
 
-    public void setMonto(double monto) {
-        this.monto = monto;
+    public void setAmarre(AmarreEntity amarreVendido) {
+        this.amarre = amarreVendido;
     }
 
-    public Long getNum_amarre() {
-        return num_amarre;
+    public UsuarioEntity getVendedor() {
+        return vendedor;
     }
 
-    public void setNum_amarre(Long num_amarre) {
-        this.num_amarre = num_amarre;
+    public void setVendedor(UsuarioEntity vendedor) {
+        this.vendedor = vendedor;
     }
 
-    public String getVendedor_cedula() {
-        return vendedor_cedula;
+    public UsuarioEntity getComprador() {
+        return comprador;
     }
 
-    public void setVendedor_cedula(String vendedor_cedula) {
-        this.vendedor_cedula = vendedor_cedula;
+    public void setComprador(UsuarioEntity comprador) {
+        this.comprador = comprador;
     }
-
-    public String getComprador_cedula() {
-        return comprador_cedula;
-    }
-
-    public void setComprador_cedula(String comprador_cedula) {
-        this.comprador_cedula = comprador_cedula;
-    }
-    
 }

@@ -1,10 +1,15 @@
 package com.yates.proyecto_yates.model.entity;
 
+import com.yates.proyecto_yates.model.TipoUsuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -17,18 +22,32 @@ public class UsuarioEntity {
     private String direccion;
     private String telefono;
     private String contrasena;
+
+    @Column(unique = true)
     private String mail;
 
     @Column(name = "fecha_vinculacion")
-    private Date fechaVinculacion;
+    private LocalDate fechaVinculacion;
 
-    @Column(name = "tipo_usuario")
-    private int tipoUsuario;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario", nullable = false)
+    private TipoUsuario tipoUsuario;
+
+    @OneToMany(mappedBy = "dueno")
+    private List<YateEntity> yatesPropios;
+
+    // Ventas donde este usuario fue el VENDEDOR
+    @OneToMany(mappedBy = "vendedor")
+    private List<VentaEntity> ventasRealizadas;
+
+    // Ventas donde este usuario fue el COMPRADOR
+    @OneToMany(mappedBy = "comprador")
+    private List<VentaEntity> comprasRealizadas;
 
     public UsuarioEntity() {
     }
 
-    public UsuarioEntity(String cedula, String nombre, String direccion, String telefono, String contrasena, String mail, Date fechaVinculacion, int tipoUsuario) {
+    public UsuarioEntity(String cedula, String nombre, String direccion, String telefono, String contrasena, String mail, LocalDate fechaVinculacion, TipoUsuario tipoUsuario, List<YateEntity> yatesPropios) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -37,6 +56,7 @@ public class UsuarioEntity {
         this.mail = mail;
         this.fechaVinculacion = fechaVinculacion;
         this.tipoUsuario = tipoUsuario;
+        this.yatesPropios = yatesPropios;
     }
 
     public String getCedula() {
@@ -87,20 +107,28 @@ public class UsuarioEntity {
         this.mail = mail;
     }
 
-    public Date getFechaVinculacion() {
+    public LocalDate getFechaVinculacion() {
         return fechaVinculacion;
     }
 
-    public void setFechaVinculacion(Date fechaVinculacion) {
+    public void setFechaVinculacion(LocalDate fechaVinculacion) {
         this.fechaVinculacion = fechaVinculacion;
     }
 
-    public int getTipoUsuario() {
+    public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(int tipoUsuario) {
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public List<YateEntity> getYatesPropios() {
+        return yatesPropios;
+    }
+
+    public void setYatesPropios(List<YateEntity> yatesPropios) {
+        this.yatesPropios = yatesPropios;
     }
 
 }

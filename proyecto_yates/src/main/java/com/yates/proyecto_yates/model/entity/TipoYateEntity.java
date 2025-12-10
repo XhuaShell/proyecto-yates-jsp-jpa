@@ -1,41 +1,39 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.yates.proyecto_yates.model.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-/**
- *
- * @author krate
- */
 @Entity
-@Table(name="tipo_yate")
+@Table(name = "tipo_yate")
 public class TipoYateEntity {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id_tipo;
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY es más recomendable
+    private Long num_tipo_yate;
+
+    @Column(unique = true)
     private String nombre;
     private String descripcion;
 
-    public TipoYateEntity(Long id_tipo, String nombre, String descripcion) {
-        this.id_tipo = id_tipo;
+    public TipoYateEntity() {
+    }
+
+    public TipoYateEntity(Long num_tipo_yate, String nombre, String descripcion) {
+        this.num_tipo_yate = num_tipo_yate;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public Long getId_tipo() {
-        return id_tipo;
+    public Long getNum_tipo_yate() {
+        return num_tipo_yate;
     }
 
-    public void setId_tipo(Long id_tipo) {
-        this.id_tipo = id_tipo;
+    public void setNum_tipo_yate(Long num_tipo_yate) {
+        this.num_tipo_yate = num_tipo_yate;
     }
 
     public String getNombre() {
@@ -53,5 +51,5 @@ public class TipoYateEntity {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
 }

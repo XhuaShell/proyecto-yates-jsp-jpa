@@ -3,7 +3,6 @@ package com.yates.proyecto_yates.controller;
 import com.yates.proyecto_yates.model.dto.UsuarioDTO;
 import com.yates.proyecto_yates.model.dto.UsuarioLoginDTO;
 import com.yates.proyecto_yates.model.repositorys.config.JpaUtil;
-import com.yates.proyecto_yates.service.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,14 +28,8 @@ public class LoginServlet extends HttpServlet {
         String mail = req.getParameter("mail");
         String contrasena = req.getParameter("contrasena");
         UsuarioLoginDTO usuarioLog = new UsuarioLoginDTO(mail, contrasena);
-
-        UsuarioService service = new UsuarioService(JpaUtil.getEntityManager());
         
-        try {
-            UsuarioDTO usuarioDTO = service.login(usuarioLog);
-            
-            
-            
+        try {            
         } catch (Exception e) {
             req.setAttribute("error", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/vistas/error.jsp").forward(req, resp);
