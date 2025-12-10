@@ -48,83 +48,112 @@ public class TipoYateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        // Leer el parámetro action
         String action = request.getParameter("action");
 
+        if (action == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro 'action'");
+            return;
+        }
+
         switch (action) {
-            // VISTAS
+
             case "formulario":
                 mostrarFormulario(request, response);
                 break;
+
             case "lista":
                 mostrarLista(request, response);
                 break;
+
             case "edicion":
                 mostrarActualizacion(request, response);
                 break;
+
             case "delete":
                 mostrarEliminacion(request, response);
                 break;
-            case "main":
-                mostrarmain(request, response);
-                break;
 
-            // API
-            case "getLista":
+            case "main":
+                mostrarMain(request, response);
+                break;
+            case "lista1":
                 getLista(request, response);
                 break;
-
             default:
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no válida");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción '" + action + "' no válida");
         }
     }
 
+    // CREAR
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
-        if ("create".equals(action)) {
-            create(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "POST action no válida");
+
+        switch (action) {
+            case "formulario":
+                create(request, response);
+                break;
+            case "edicion":
+                edit(request, response);
+                break;
+            case "delete":
+                delete(request, response);
+                break;
+
+            default:
+                response.sendError(400, "POST action no válida");
+
         }
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String action = request.getParameter("action");
-        if ("delete".equals(action)) {
-            delete(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "DELETE action no válida");
-        }
-    }
-
-    private void mostrarFormulario(HttpServletRequest req, HttpServletResponse res) {
-    }
-
-    private void mostrarLista(HttpServletRequest req, HttpServletResponse res) {
-    }
-
-    private void mostrarActualizacion(HttpServletRequest req, HttpServletResponse res) {
-    }
-
-    private void mostrarEliminacion(HttpServletRequest req, HttpServletResponse res) {
-    }
-
-    private void mostrarmain(HttpServletRequest req, HttpServletResponse res) {
     }
 
     private void getLista(HttpServletRequest req, HttpServletResponse res) {
+        // GET /AmarreServlet?action=lista&id=1
+
     }
 
     private void create(HttpServletRequest req, HttpServletResponse res) {
+        // POST /AmarreServlet?action=formulario
     }
 
-    private void delete(HttpServletRequest req, HttpServletResponse res) {
+    private void edit(HttpServletRequest req, HttpServletResponse res) {
+        // PUT /AmarreServlet?action=edicion
+    }
+
+    private void delete(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        
+    }
+
+    private void mostrarFormulario(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        // Aquí haces forward a JSP o imprimes HTML
+        req.getRequestDispatcher("/WEB-INF/vistas/tipoyate/Formulario.jsp")
+       .forward(req, res);
+    }
+
+    private void mostrarLista(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/vistas/tipoyate/Lista.jsp")
+       .forward(req, res);
+    }
+
+    private void mostrarActualizacion(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/vistas/tipoyate/FormularioEdicion.jsp")
+       .forward(req, res);
+    }
+
+    private void mostrarEliminacion(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/vistas/tipoyate/Deleter.jsp")
+       .forward(req, res);
+    }
+
+    private void mostrarMain(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
     }
 
 }

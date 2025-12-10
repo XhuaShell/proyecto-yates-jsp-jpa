@@ -78,7 +78,7 @@ public class AmarreServlet extends HttpServlet {
                 mostrarMain(request, response);
                 break;
             case "lista1":
-               getLista(request, response); 
+                getLista(request, response);
                 break;
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción '" + action + "' no válida");
@@ -96,48 +96,22 @@ public class AmarreServlet extends HttpServlet {
             case "formulario":
                 create(request, response);
                 break;
-            default:
-                response.sendError(400, "POST action no válida");
-        }
-    }
-
-    // ACTUALIZAR
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String action = request.getParameter("action");
-
-        switch (action) {
             case "edicion":
                 edit(request, response);
                 break;
-
-            default:
-                response.sendError(400, "PUT action no válida");
-        }
-    }
-
-    // ELIMINAR
-    
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String action = request.getParameter("action");
-
-        switch (action) {
             case "delete":
                 delete(request, response);
                 break;
 
             default:
-                response.sendError(400, "DELETE action no válida");
+                response.sendError(400, "POST action no válida");
+
         }
     }
-        
+
     private void getLista(HttpServletRequest req, HttpServletResponse res) {
         // GET /AmarreServlet?action=lista&id=1
+
     }
 
     private void create(HttpServletRequest req, HttpServletResponse res) {
@@ -148,25 +122,34 @@ public class AmarreServlet extends HttpServlet {
         // PUT /AmarreServlet?action=edicion
     }
 
-    private void delete(HttpServletRequest req, HttpServletResponse res) {
-        // DELETE /AmarreServlet?action=delete
+    private void delete(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        
     }
 
     private void mostrarFormulario(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         // Aquí haces forward a JSP o imprimes HTML
+        req.getRequestDispatcher("/WEB-INF/vistas/amarre/Formulario.jsp")
+       .forward(req, res);
     }
 
     private void mostrarLista(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/vistas/amarre/Lista.jsp")
+       .forward(req, res);
     }
 
     private void mostrarActualizacion(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/vistas/amarre/FormularioEdicion.jsp")
+       .forward(req, res);
     }
 
     private void mostrarEliminacion(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/vistas/amarre/Deleter.jsp")
+       .forward(req, res);
     }
 
     private void mostrarMain(HttpServletRequest req, HttpServletResponse res)

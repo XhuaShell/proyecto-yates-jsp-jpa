@@ -16,8 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author krate
  */
-@WebServlet(name = "SocioServlet", urlPatterns = {"/SocioServlet"})
-public class SocioServlet extends HttpServlet {
+
+@WebServlet(name = "EmpleadoServlet", urlPatterns = {"/EmpleadoServlet"})
+public class EmpleadoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +37,10 @@ public class SocioServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SocioServlet</title>");
+            out.println("<title>Servlet EmpleadoServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SocioServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet EmpleadoServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -124,32 +125,32 @@ public class SocioServlet extends HttpServlet {
 
     private void delete(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-
+        
     }
 
     private void mostrarFormulario(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         // Aquí haces forward a JSP o imprimes HTML
-        req.getRequestDispatcher("/WEB-INF/vistas/usuarios/Formulario.jsp")
-                .forward(req, res);
+        req.getRequestDispatcher("/WEB-INF/vistas/empleado/Formulario.jsp")
+       .forward(req, res);
     }
 
     private void mostrarLista(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/vistas/usuarios/Lista.jsp")
-                .forward(req, res);
+        req.getRequestDispatcher("/WEB-INF/vistas/empleado/Lista.jsp")
+       .forward(req, res);
     }
 
     private void mostrarActualizacion(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/vistas/usuarios/FormularioEdicion.jsp")
-                .forward(req, res);
+        req.getRequestDispatcher("/WEB-INF/vistas/empleado/FormularioEdicion.jsp")
+       .forward(req, res);
     }
 
     private void mostrarEliminacion(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/vistas/usuarios/Deleter.jsp")
-                .forward(req, res);
+        req.getRequestDispatcher("/WEB-INF/vistas/empleado/Deleter.jsp")
+       .forward(req, res);
     }
 
     private void mostrarMain(HttpServletRequest req, HttpServletResponse res)
@@ -157,3 +158,6 @@ public class SocioServlet extends HttpServlet {
     }
 
 }
+   
+
+

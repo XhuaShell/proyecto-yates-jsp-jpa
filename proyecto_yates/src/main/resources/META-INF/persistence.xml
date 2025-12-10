@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" 
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<persistence version="3.0"
+             xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
-    
-    <persistence-unit name="YatePU" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        
-        <class>com.yates.proyecto_yates.model.entity.UsuarioEntity</class>
-        <class>com.yates.proyecto_yates.model.entity.ZonaEntity</class>
-        <class>com.yates.proyecto_yates.model.entity.TipoYateEntity</class>
-        <class>com.yates.proyecto_yates.model.entity.AmarreEntity</class>
-        <class>com.yates.proyecto_yates.model.entity.YateEntity</class>
-        <class>com.yates.proyecto_yates.model.entity.VentaEntity</class>
-        <class>com.yates.proyecto_yates.model.entity.AsignarEntity</class>
-        
-        <properties>
-            <!-- Config Jesus
-            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3300/club_yates_db?serverTimezone=UTC"/>
-            <property name="jakarta.persistence.jdbc.user" value="administrator"/>
-            <property name="jakarta.persistence.jdbc.password" value="123456"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            -->
-            
-        </properties>
-        
-    </persistence-unit>
+
+  <persistence-unit name="YatePU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <!-- ELIMINADO: NO USAMOS JNDI CUANDO CORRES POR MAVEN -->
+
+    <!-- ENTIDADES -->
+    <class>com.yates.proyecto_yates.model.entity.UsuarioEntity</class>
+    <class>com.yates.proyecto_yates.model.entity.ZonaEntity</class>
+    <class>com.yates.proyecto_yates.model.entity.TipoYateEntity</class>
+    <class>com.yates.proyecto_yates.model.entity.AmarreEntity</class>
+    <class>com.yates.proyecto_yates.model.entity.YateEntity</class>
+    <class>com.yates.proyecto_yates.model.entity.VentaEntity</class>
+    <class>com.yates.proyecto_yates.model.entity.AsignarEntity</class>
+
+    <properties>
+      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mysqlYate?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="jakarta.persistence.jdbc.user" value="root"/>
+      <property name="jakarta.persistence.jdbc.password" value=""/>
+
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
+
 </persistence>
