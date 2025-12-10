@@ -1,12 +1,14 @@
 package com.yates.proyecto_yates;
 
 import com.yates.proyecto_yates.model.TipoUsuario;
+import com.yates.proyecto_yates.model.dto.ZonaDTO;
 import com.yates.proyecto_yates.model.entity.AmarreEntity;
 import com.yates.proyecto_yates.model.entity.TipoYateEntity;
 import com.yates.proyecto_yates.model.entity.UsuarioEntity;
 import com.yates.proyecto_yates.model.entity.VentaEntity;
 import com.yates.proyecto_yates.model.entity.YateEntity;
 import com.yates.proyecto_yates.model.entity.ZonaEntity;
+import com.yates.proyecto_yates.model.repositorys.ZonaRepository;
 import com.yates.proyecto_yates.model.repositorys.config.JpaUtil;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
@@ -23,12 +25,37 @@ public class EjemploDB {
         try {
             em = JpaUtil.getEntityManager();
 
-            // 2. Iniciar la Transacción (Todo o Nada)
+            ZonaRepository repository = new ZonaRepository(em);
+
+            /* Éstos no necesitan iniciar una transacción */
+            repository.listar();
+            repository.porId('A');
+
             em.getTransaction().begin();
+
+            /* Éstos necesitan iniciar una transacción */
+            
+            repository.guardar(new ZonaDTO() ); //-> aquí se agrega o se guarda
+            repository.eliminar('A');
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+                System.err.println("❌ Error fatal. Se ha revertido la transacción.");
+            }
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+
+        /*     
             System.out.println("🚀 Iniciando la carga de datos en una transacción...");
 
-            // --- EJECUTAR CADA BLOQUE DE INSERCIÓN ---
             insertZonas(em);
+            // --- EJECUTAR CADA BLOQUE DE INSERCIÓN ---
             insertTipoYate(em);
             // insertOcupar(em); // No sé qué es "ocupar", la omito.
             insertUsuarios(em);
@@ -53,12 +80,12 @@ public class EjemploDB {
             if (em != null) {
                 em.close();
             }
-        }
+         */
     }
 
-    // ------------------------------------------------------------------
-    // Bloques de inserción, mapeando los datos de SQL a objetos Java.
-    // ------------------------------------------------------------------
+// ------------------------------------------------------------------
+// Bloques de inserción, mapeando los datos de SQL a objetos Java.
+// ------------------------------------------------------------------
     private static void insertZonas(EntityManager em) {
         System.out.println("-> Insertando Zonas...");
         // Zona A
@@ -140,8 +167,10 @@ public class EjemploDB {
         System.out.println("-> Insertando Amarres...");
 
         // Recuperar entidades necesarias antes de insertar Amarre
-        ZonaEntity zA = em.find(ZonaEntity.class, 'A');
-        UsuarioEntity u1 = em.find(UsuarioEntity.class, "1001001001");
+        ZonaEntity zA = em.find(ZonaEntity.class,
+                'A');
+        UsuarioEntity u1 = em.find(UsuarioEntity.class,
+                "1001001001");
 
         // Amarre 1 (con el campo 'usuario' que decidiste mantener)
         AmarreEntity a1 = new AmarreEntity();
@@ -159,7 +188,8 @@ public class EjemploDB {
     private static void insertYates(EntityManager em) {
         System.out.println("-> Insertando Yates...");
         // Recuperar entidades necesarias
-        UsuarioEntity u1 = em.find(UsuarioEntity.class, "1001001001");
+        UsuarioEntity u1 = em.find(UsuarioEntity.class,
+                "1001001001");
         TipoYateEntity t1 = (TipoYateEntity) em.createQuery("SELECT t FROM TipoYateEntity t WHERE t.nombre = 'Velero'").getSingleResult();
 
         YateEntity y1 = new YateEntity();
@@ -180,9 +210,12 @@ public class EjemploDB {
         System.out.println("-> Insertando Ventas...");
 
         // Recuperar entidades necesarias
-        UsuarioEntity u1 = em.find(UsuarioEntity.class, "1001001001"); // Vendedor 1 y Comprador 2
-        UsuarioEntity u2 = em.find(UsuarioEntity.class, "1002002002");
-        AmarreEntity a1 = em.find(AmarreEntity.class, 1L); // Amarre 1
+        UsuarioEntity u1 = em.find(UsuarioEntity.class,
+                "1001001001"); // Vendedor 1 y Comprador 2
+        UsuarioEntity u2 = em.find(UsuarioEntity.class,
+                "1002002002");
+        AmarreEntity a1 = em.find(AmarreEntity.class,
+                1L); // Amarre 1
 
         // Venta 1: Vendedor u1 -> Comprador u2
         VentaEntity v1 = new VentaEntity();
@@ -194,8 +227,10 @@ public class EjemploDB {
         em.persist(v1);
 
         // Venta 2: Vendedor u2 -> Comprador u3 (simulando una reventa)
-        UsuarioEntity u3 = em.find(UsuarioEntity.class, "1003003003");
-        AmarreEntity a2 = em.find(AmarreEntity.class, 2L);
+        UsuarioEntity u3 = em.find(UsuarioEntity.class,
+                "1003003003");
+        AmarreEntity a2 = em.find(AmarreEntity.class,
+                2L);
 
         VentaEntity v2 = new VentaEntity();
         v2.setFecha(LocalDate.parse("2022-11-22"));
