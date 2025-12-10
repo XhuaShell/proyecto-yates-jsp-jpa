@@ -6,20 +6,22 @@ import java.util.List;
 
 public class ZonaDTO {
 
-    private double cuota_administracion;
-    private int capacidad;
-    private double profundidad;
-    private double dim_max_eslora;
-    private double dim_max_manga;
-    private double dim_max_calado;
-    private double dim_min_eslora;
-    private double dim_min_manga;
-    private double dim_min_calado;
+    private Character id_zona;
+    private Double cuota_administracion;
+    private Integer capacidad;
+    private Double profundidad;
+    private Double dim_max_eslora;
+    private Double dim_max_manga;
+    private Double dim_max_calado;
+    private Double dim_min_eslora;
+    private Double dim_min_manga;
+    private Double dim_min_calado;
 
     public ZonaDTO() {
     }
 
-    public ZonaDTO(double cuota_administracion, int capacidad, double profundidad, double dim_max_eslora, double dim_max_manga, double dim_max_calado, double dim_min_eslora, double dim_min_manga, double dim_min_calado) {
+    public ZonaDTO(Character id_zona, Double cuota_administracion, Integer capacidad, Double profundidad, Double dim_max_eslora, Double dim_max_manga, Double dim_max_calado, Double dim_min_eslora, Double dim_min_manga, Double dim_min_calado) {
+        this.id_zona = id_zona;
         this.cuota_administracion = cuota_administracion;
         this.capacidad = capacidad;
         this.profundidad = profundidad;
@@ -37,6 +39,7 @@ public class ZonaDTO {
         }
 
         return new ZonaDTO(
+                entity.getId_zona(),
                 entity.getCuota_administracion(),
                 entity.getCapacidad(),
                 entity.getProfundidad(),
@@ -61,6 +64,23 @@ public class ZonaDTO {
         }
 
         return dtos;
+    }
+
+    public ZonaEntity toEntity() {
+        ZonaEntity entity = new ZonaEntity();
+
+        entity.setId_zona(this.id_zona);
+        entity.setCuota_administracion(this.cuota_administracion);
+        entity.setCapacidad(this.capacidad);
+        entity.setProfundidad(this.profundidad);
+        entity.setDim_max_eslora(this.dim_max_eslora);
+        entity.setDim_max_manga(this.dim_max_manga);
+        entity.setDim_max_calado(this.dim_max_calado);
+        entity.setDim_min_eslora(this.dim_min_eslora);
+        entity.setDim_min_manga(this.dim_min_manga);
+        entity.setDim_min_calado(this.dim_min_calado);
+
+        return entity;
     }
 
     public double getCuota_administracion() {
