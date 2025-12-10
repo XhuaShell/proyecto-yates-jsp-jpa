@@ -1,7 +1,8 @@
 package com.yates.proyecto_yates.model.dto;
 
 import com.yates.proyecto_yates.model.entity.AmarreEntity;
-import java.time.LocalDate;
+import com.yates.proyecto_yates.model.entity.ZonaEntity;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,24 @@ public class AmarreDTO {
         }
 
         return dtos;
+    }
+
+    public AmarreEntity toEntity(EntityManager em) {
+        AmarreEntity entity = new AmarreEntity();
+
+        // Si trae PK la ponemos (solo para update)
+        entity.setNum_amarre(this.num_amarre);
+
+        // Cargar zona obligatoria
+        ZonaEntity zona = em.find(ZonaEntity.class, this.id_zona);
+
+        if (zona == null) {
+            throw new IllegalArgumentException("La zona con id " + this.id_zona + " no existe.");
+        }
+
+        entity.setZona(zona);
+
+        return entity;
     }
 
     public Long getNum_amarre() {
