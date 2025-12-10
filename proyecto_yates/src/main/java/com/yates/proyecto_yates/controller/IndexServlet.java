@@ -15,5 +15,5 @@ public class IndexServlet extends HttpServlet {
             throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/vistas/index.jsp").forward(request, response);
     }
-
+    
 }

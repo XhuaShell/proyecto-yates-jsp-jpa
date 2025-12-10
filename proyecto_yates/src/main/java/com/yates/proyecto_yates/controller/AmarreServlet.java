@@ -48,7 +48,41 @@ public class AmarreServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        // Leer el parámetro action
+        String action = request.getParameter("action");
+
+        if (action == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro 'action'");
+            return;
+        }
+
+        switch (action) {
+
+            case "formulario":
+                mostrarFormulario(request, response);
+                break;
+
+            case "lista":
+                mostrarLista(request, response);
+                break;
+
+            case "edicion":
+                mostrarActualizacion(request, response);
+                break;
+
+            case "delete":
+                mostrarEliminacion(request, response);
+                break;
+
+            case "main":
+                mostrarMain(request, response);
+                break;
+            case "lista1":
+               getLista(request, response); 
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción '" + action + "' no válida");
+        }
     }
 
     // CREAR
@@ -56,6 +90,15 @@ public class AmarreServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String action = request.getParameter("action");
+
+        switch (action) {
+            case "formulario":
+                create(request, response);
+                break;
+            default:
+                response.sendError(400, "POST action no válida");
+        }
     }
 
     // ACTUALIZAR
@@ -63,13 +106,71 @@ public class AmarreServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String action = request.getParameter("action");
+
+        switch (action) {
+            case "edicion":
+                edit(request, response);
+                break;
+
+            default:
+                response.sendError(400, "PUT action no válida");
+        }
     }
 
     // ELIMINAR
+    
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String action = request.getParameter("action");
+
+        switch (action) {
+            case "delete":
+                delete(request, response);
+                break;
+
+            default:
+                response.sendError(400, "DELETE action no válida");
+        }
+    }
+        
+    private void getLista(HttpServletRequest req, HttpServletResponse res) {
+        // GET /AmarreServlet?action=lista&id=1
+    }
+
+    private void create(HttpServletRequest req, HttpServletResponse res) {
+        // POST /AmarreServlet?action=formulario
+    }
+
+    private void edit(HttpServletRequest req, HttpServletResponse res) {
+        // PUT /AmarreServlet?action=edicion
+    }
+
+    private void delete(HttpServletRequest req, HttpServletResponse res) {
+        // DELETE /AmarreServlet?action=delete
+    }
+
+    private void mostrarFormulario(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        // Aquí haces forward a JSP o imprimes HTML
+    }
+
+    private void mostrarLista(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+    }
+
+    private void mostrarActualizacion(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+    }
+
+    private void mostrarEliminacion(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+    }
+
+    private void mostrarMain(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
     }
 
 }

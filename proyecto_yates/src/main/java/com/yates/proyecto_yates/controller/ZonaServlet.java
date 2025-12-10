@@ -45,43 +45,58 @@ public class ZonaServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+
+        switch (action) {
+            // Vistas
+            case "formulario":
+                mostrarFormulario(request, response);
+                break;
+            case "lista":
+                mostrarLista(request, response);
+                break;
+            case "main":
+                mostrarmain(request, response);
+                break;
+
+            // API
+            case "getLista":
+                getLista(request, response);
+                break;
+
+            default:
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Acción no válida");
+        }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        if ("create".equals(action)) {
+            create(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "POST action no válida");
+        }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+// MÉTODOS PRIVADOS (placeholders)
+    private void mostrarFormulario(HttpServletRequest req, HttpServletResponse res) {
+    }
+
+    private void mostrarLista(HttpServletRequest req, HttpServletResponse res) {
+    }
+
+    private void mostrarmain(HttpServletRequest req, HttpServletResponse res) {
+    }
+
+    private void getLista(HttpServletRequest req, HttpServletResponse res) {
+    }
+
+    private void create(HttpServletRequest req, HttpServletResponse res) {
+    }
 
 }
