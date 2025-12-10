@@ -37,6 +37,16 @@ public class TipoYateDTO {
         return dtos;
     }
 
+    public TipoYateEntity toEntity() {
+        TipoYateEntity entity = new TipoYateEntity();
+
+        entity.setNum_tipo_yate(this.num_tipo_yate); // Puede venir null → JPA asigna autoincremento
+        entity.setNombre(this.nombre);
+        entity.setDescripcion(this.descripcion);
+
+        return entity;
+    }
+
     public Long getId_tipo() {
         return num_tipo_yate;
     }

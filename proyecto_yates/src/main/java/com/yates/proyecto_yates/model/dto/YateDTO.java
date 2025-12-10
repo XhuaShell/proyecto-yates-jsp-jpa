@@ -1,6 +1,9 @@
 package com.yates.proyecto_yates.model.dto;
 
+import com.yates.proyecto_yates.model.entity.TipoYateEntity;
+import com.yates.proyecto_yates.model.entity.UsuarioEntity;
 import com.yates.proyecto_yates.model.entity.YateEntity;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,32 @@ public class YateDTO {
                 entity.getDueno() != null ? entity.getDueno().getCedula() : null,
                 TipoYateDTO.fromEntity(entity.getTipoYate())
         );
+    }
+
+    public YateEntity toEntity(EntityManager em) {
+        YateEntity entity = new YateEntity();
+
+        entity.setMatricula(this.matricula);
+        entity.setNombre(this.nombre);
+        entity.setEslora(this.eslora);
+        entity.setManga(this.manga);
+        entity.setCalado(this.calado);
+
+        if (this.usuario_dueno_cedula != null) {
+            UsuarioEntity dueno = em.find(UsuarioEntity.class, this.usuario_dueno_cedula);
+            entity.setDueno(dueno);
+        } else {
+            entity.setDueno(null);
+        }
+
+        if (this.id_tipo != null && this.id_tipo.getId_tipo() != null) {
+            TipoYateEntity tipo = em.find(TipoYateEntity.class, this.id_tipo.getId_tipo());
+            entity.setTipoYate(tipo);
+        } else {
+            throw new IllegalArgumentException("El tipo de yate es obligatorio.");
+        }
+
+        return entity;
     }
 
     public static List<YateDTO> fromEntityList(List<YateEntity> entidades) {
