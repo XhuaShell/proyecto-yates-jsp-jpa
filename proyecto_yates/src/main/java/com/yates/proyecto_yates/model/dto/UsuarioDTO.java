@@ -1,20 +1,25 @@
 package com.yates.proyecto_yates.model.dto;
 
-import java.util.Date;
+import com.yates.proyecto_yates.model.TipoUsuario;
+import com.yates.proyecto_yates.model.entity.UsuarioEntity;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDTO {
+
     private String cedula;
     private String nombre;
     private String direccion;
     private String telefono;
     private String mail;
-    private Date fechaVinculacion;
-    private String tipoUsuario;
-    
+    private LocalDate fechaVinculacion;
+    private TipoUsuario tipoUsuario;
+
     public UsuarioDTO() {
     }
-    
-    public UsuarioDTO(String cedula, String nombre, String direccion, String telefono, String mail, Date fechaVinculacion, String tipoUsuario) {
+
+    public UsuarioDTO(String cedula, String nombre, String direccion, String telefono, String mail, LocalDate fechaVinculacion, TipoUsuario tipoUsuario) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -22,6 +27,58 @@ public class UsuarioDTO {
         this.mail = mail;
         this.fechaVinculacion = fechaVinculacion;
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public static UsuarioDTO fromEntity(UsuarioEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        return new UsuarioDTO(
+                entity.getCedula(),
+                entity.getNombre(),
+                entity.getDireccion(),
+                entity.getTelefono(),
+                entity.getMail(),
+                // LocalDate → Date
+                entity.getFechaVinculacion(),
+                entity.getTipoUsuario()
+        );
+    }
+
+    public UsuarioEntity toEntity() {
+        UsuarioEntity entity = new UsuarioEntity();
+
+        entity.setCedula(this.cedula);
+        entity.setNombre(this.nombre);
+        entity.setDireccion(this.direccion);
+        entity.setTelefono(this.telefono);
+        entity.setMail(this.mail);
+
+        // Date → LocalDate
+        if (this.fechaVinculacion != null) {
+            entity.setFechaVinculacion(this.fechaVinculacion);
+        } else {
+            entity.setFechaVinculacion(null);
+        }
+
+        entity.setTipoUsuario(this.tipoUsuario);
+
+        return entity;
+    }
+
+    public static List<UsuarioDTO> fromEntityList(List<UsuarioEntity> entities) {
+        List<UsuarioDTO> dtos = new ArrayList<>();
+
+        if (entities == null) {
+            return dtos;
+        }
+
+        for (UsuarioEntity entity : entities) {
+            dtos.add(fromEntity(entity));
+        }
+
+        return dtos;
     }
 
     public String getCedula() {
@@ -64,22 +121,20 @@ public class UsuarioDTO {
         this.mail = mail;
     }
 
-    public Date getFechaVinculacion() {
+    public LocalDate getFechaVinculacion() {
         return fechaVinculacion;
     }
 
-    public void setFechaVinculacion(Date fechaVinculacion) {
+    public void setFechaVinculacion(LocalDate fechaVinculacion) {
         this.fechaVinculacion = fechaVinculacion;
     }
 
-    public String getTipoUsuario() {
+    public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(String tipoUsuario) {
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 
-    
-    
 }

@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.yates.proyecto_yates.model.dto;
 
-/**
- *
- * @author krate
- */
+import com.yates.proyecto_yates.model.entity.YateEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 public class YateDTO {
 
     private String matricula;
@@ -16,12 +12,12 @@ public class YateDTO {
     private double manga;
     private double calado;
     private String usuario_dueno_cedula;
-    private Long id_tipo;
+    private TipoYateDTO id_tipo;
 
     public YateDTO() {
     }
-    
-    public YateDTO(String matricula, String nombre, double eslora, double manga, double calado, String usuario_dueno_cedula, Long id_tipo) {
+
+    public YateDTO(String matricula, String nombre, double eslora, double manga, double calado, String usuario_dueno_cedula, TipoYateDTO id_tipo) {
         this.matricula = matricula;
         this.nombre = nombre;
         this.eslora = eslora;
@@ -29,6 +25,36 @@ public class YateDTO {
         this.calado = calado;
         this.usuario_dueno_cedula = usuario_dueno_cedula;
         this.id_tipo = id_tipo;
+    }
+
+    public static YateDTO fromEntity(YateEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        return new YateDTO(
+                entity.getMatricula(),
+                entity.getNombre(),
+                entity.getEslora(),
+                entity.getManga(),
+                entity.getCalado(),
+                entity.getDueno() != null ? entity.getDueno().getCedula() : null,
+                TipoYateDTO.fromEntity(entity.getTipoYate())
+        );
+    }
+
+    public static List<YateDTO> fromEntityList(List<YateEntity> entidades) {
+        List<YateDTO> dtos = new ArrayList<>();
+
+        if (entidades == null) {
+            return dtos;
+        }
+
+        for (YateEntity entity : entidades) {
+            dtos.add(fromEntity(entity));
+        }
+
+        return dtos;
     }
 
     public String getMatricula() {
@@ -79,13 +105,12 @@ public class YateDTO {
         this.usuario_dueno_cedula = usuario_dueno_cedula;
     }
 
-    public Long getId_tipo() {
+    public TipoYateDTO getId_tipo() {
         return id_tipo;
     }
 
-    public void setId_tipo(Long id_tipo) {
+    public void setId_tipo(TipoYateDTO id_tipo) {
         this.id_tipo = id_tipo;
     }
-    
-    
+
 }

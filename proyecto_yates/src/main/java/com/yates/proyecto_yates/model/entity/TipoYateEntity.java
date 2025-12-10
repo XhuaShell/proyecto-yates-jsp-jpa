@@ -27,7 +27,7 @@ public class TipoYateEntity {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
-
+    
     public Long getNum_tipo_yate() {
         return num_tipo_yate;
     }

@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.yates.proyecto_yates.model.dto;
 
 import java.time.LocalDate;
 
-/**
- *
- * @author krate
- */
 public class VentaDTO {
     private Long num_venta;
     private LocalDate fecha;

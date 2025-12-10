@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.yates.proyecto_yates.model.dto;
 
-/**
- *
- * @author xhua
- */
+import com.yates.proyecto_yates.model.entity.ZonaEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ZonaDTO {
 
     private double cuota_administracion;
@@ -20,6 +16,9 @@ public class ZonaDTO {
     private double dim_min_manga;
     private double dim_min_calado;
 
+    public ZonaDTO() {
+    }
+
     public ZonaDTO(double cuota_administracion, int capacidad, double profundidad, double dim_max_eslora, double dim_max_manga, double dim_max_calado, double dim_min_eslora, double dim_min_manga, double dim_min_calado) {
         this.cuota_administracion = cuota_administracion;
         this.capacidad = capacidad;
@@ -30,6 +29,38 @@ public class ZonaDTO {
         this.dim_min_eslora = dim_min_eslora;
         this.dim_min_manga = dim_min_manga;
         this.dim_min_calado = dim_min_calado;
+    }
+
+    public static ZonaDTO fromEntity(ZonaEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        return new ZonaDTO(
+                entity.getCuota_administracion(),
+                entity.getCapacidad(),
+                entity.getProfundidad(),
+                entity.getDim_max_eslora(),
+                entity.getDim_max_manga(),
+                entity.getDim_max_calado(),
+                entity.getDim_min_eslora(),
+                entity.getDim_min_manga(),
+                entity.getDim_min_calado()
+        );
+    }
+
+    public static List<ZonaDTO> fromEntityList(List<ZonaEntity> entities) {
+        List<ZonaDTO> dtos = new ArrayList<>();
+
+        if (entities == null) {
+            return dtos;
+        }
+
+        for (ZonaEntity entity : entities) {
+            dtos.add(fromEntity(entity));
+        }
+
+        return dtos;
     }
 
     public double getCuota_administracion() {
@@ -103,5 +134,5 @@ public class ZonaDTO {
     public void setDim_min_calado(double dim_min_calado) {
         this.dim_min_calado = dim_min_calado;
     }
-    
+
 }
