@@ -4,6 +4,11 @@
  */
 package com.yates.proyecto_yates.controller;
 
+import com.yates.proyecto_yates.model.dto.UsuarioDTO;
+import com.yates.proyecto_yates.model.repositorys.UsuarioRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,8 +21,13 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author krate
  */
-@WebServlet(name = "SocioServlet", urlPatterns = {"/SocioServlet"})
-public class SocioServlet extends HttpServlet {
+@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
+public class UsuarioServlet extends HttpServlet {
+
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("YatePU");
+    EntityManager em = emf.createEntityManager();
+
+    UsuarioRepository repo = new UsuarioRepository(em);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +46,10 @@ public class SocioServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SocioServlet</title>");
+            out.println("<title>Servlet UsuarioServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SocioServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UsuarioServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -114,8 +124,9 @@ public class SocioServlet extends HttpServlet {
 
     }
 
-    private void create(HttpServletRequest req, HttpServletResponse res) {
+    private void create(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         // POST /AmarreServlet?action=formulario
+        UsuarioDTO usu=new UsuarioDTO();
     }
 
     private void edit(HttpServletRequest req, HttpServletResponse res) {

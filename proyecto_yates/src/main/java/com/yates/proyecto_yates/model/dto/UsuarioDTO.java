@@ -15,7 +15,7 @@ public class UsuarioDTO {
     private String mail;
     private LocalDate fechaVinculacion;
     private TipoUsuario tipoUsuario;
-
+    private String contrasena;
     public UsuarioDTO() {
     }
 

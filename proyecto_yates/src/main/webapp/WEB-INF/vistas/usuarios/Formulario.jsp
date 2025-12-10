@@ -15,7 +15,7 @@
         <div class="container py-5" style="max-width: 600px;">
             <h1 class="mb-4 text-center fw-semibold">Registrar Socio</h1>
 
-            <<form action="${pageContext.request.contextPath}/SocioServlet?action=formulario" method="POST">
+            <form action="${pageContext.request.contextPath}/SocioServlet?action=formulario" method="POST">
 
 
                 <div class="mb-3">
