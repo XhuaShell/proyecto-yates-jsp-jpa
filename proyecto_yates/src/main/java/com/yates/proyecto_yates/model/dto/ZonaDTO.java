@@ -52,6 +52,14 @@ public class ZonaDTO {
         );
     }
 
+    public Character getId_zona() {
+        return id_zona;
+    }
+
+    public void setId_zona(Character id_zona) {
+        this.id_zona = id_zona;
+    }
+    
     public static List<ZonaDTO> fromEntityList(List<ZonaEntity> entities) {
         List<ZonaDTO> dtos = new ArrayList<>();
 
