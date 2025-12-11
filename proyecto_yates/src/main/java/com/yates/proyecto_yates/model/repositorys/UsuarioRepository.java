@@ -1,6 +1,7 @@
 package com.yates.proyecto_yates.model.repositorys;
 
 import com.yates.proyecto_yates.model.dto.UsuarioDTO;
+import com.yates.proyecto_yates.model.dto.UsuarioLoginDTO;
 import com.yates.proyecto_yates.model.entity.UsuarioEntity;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -45,6 +46,21 @@ public class UsuarioRepository implements CrudRepository<UsuarioDTO, String> {
         UsuarioEntity entity = em.find(UsuarioEntity.class, id);
         if (entity != null) {
             em.remove(entity);
+        }
+    }
+
+    public UsuarioDTO validarCredenciales(UsuarioLoginDTO ulogin) {
+        try {
+            UsuarioEntity user = this.em.createQuery(
+                    "SELECT u FROM UsuarioEntity u WHERE u.mail = :mail AND u.contrasena = :pass",
+                    UsuarioEntity.class)
+                    .setParameter("mail", ulogin.getEmail())
+                    .setParameter("pass", ulogin.getContrasena())
+                    .getSingleResult();
+
+            return UsuarioDTO.fromEntity(user);
+        } catch (jakarta.persistence.NoResultException e) {
+            return null;
         }
     }
 }

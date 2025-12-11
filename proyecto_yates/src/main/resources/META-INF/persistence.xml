@@ -16,6 +16,7 @@
     <class>com.yates.proyecto_yates.model.entity.VentaEntity</class>
     <class>com.yates.proyecto_yates.model.entity.AsignarEntity</class>
 
+    <!--
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3300/club_yates_db?serverTimezone=UTC"/>
@@ -27,7 +28,7 @@
       <property name="hibernate.hbm2ddl.auto" value="update"/>
     </properties>
     
-    <!--
+    -->
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mysqlYate?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
@@ -39,7 +40,6 @@
       <property name="hibernate.format_sql" value="true"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
     </properties>
-    -->
   </persistence-unit>
 
 </persistence>
