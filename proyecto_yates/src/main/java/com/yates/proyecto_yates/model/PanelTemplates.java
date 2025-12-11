@@ -33,20 +33,63 @@ public class PanelTemplates {
                 "Panel de Administrador",
                 "/proyecto_yates/panel?typeuser=admin",
                 List.of(
-                        new PanelSeccionDTO("Inicio", List.of(
-                                new PanelBotonDTO("Amarres", "/amarre/lista"),
-                                new PanelBotonDTO("Yates", "/yate/lista")
+                        // ==========================
+                        //       AMARRE SERVLET
+                        // ==========================
+                        new PanelSeccionDTO("AmarreServlet", List.of(
+                                new PanelBotonDTO("Formulario", "/proyecto_yates/AmarreServlet?action=formulario"),
+                                new PanelBotonDTO("Lista", "/proyecto_yates/AmarreServlet?action=lista"),
+                                new PanelBotonDTO("Lista con Datos", "/proyecto_yates/AmarreServlet?action=lista1"),
+                                new PanelBotonDTO("Edición", "/proyecto_yates/AmarreServlet?action=edicion"),
+                                new PanelBotonDTO("Eliminar", "/proyecto_yates/AmarreServlet?action=delete"),
+                                new PanelBotonDTO("Main", "/proyecto_yates/AmarreServlet?action=main")
                         )),
-                        new PanelSeccionDTO("Gestión", List.of(
-                                new PanelBotonDTO("Zonas", "/zona/lista"),
-                                new PanelBotonDTO("Empleados", "/funcionNoTerminada"),
-                                new PanelBotonDTO("Ventas", "/funcionNoTerminada"),
-                                new PanelBotonDTO("Servicios", "/funcionNoTerminada")
+                        // ==========================
+                        //     TIPO YATE SERVLET
+                        // ==========================
+                        new PanelSeccionDTO("TipoYateServlet", List.of(
+                                new PanelBotonDTO("Formulario", "/proyecto_yates/TipoYateServlet?action=formulario"),
+                                new PanelBotonDTO("Lista", "/proyecto_yates/TipoYateServlet?action=lista"),
+                                new PanelBotonDTO("Lista con Datos", "/proyecto_yates/TipoYateServlet?action=lista1"),
+                                new PanelBotonDTO("Edición", "/proyecto_yates/TipoYateServlet?action=edicion"),
+                                new PanelBotonDTO("Eliminar", "/proyecto_yates/TipoYateServlet?action=delete"),
+                                new PanelBotonDTO("Main", "/proyecto_yates/TipoYateServlet?action=main")
                         )),
-                        new PanelSeccionDTO("Cuenta", List.of(
-                                new PanelBotonDTO("Actualización", "/socio/informacion")
+                        // ==========================
+                        //       USUARIO SERVLET
+                        // ==========================
+                        new PanelSeccionDTO("UsuarioServlet", List.of(
+                                new PanelBotonDTO("Formulario", "/proyecto_yates/UsuarioServlet?action=formulario"),
+                                new PanelBotonDTO("Lista", "/proyecto_yates/UsuarioServlet?action=lista"),
+                                new PanelBotonDTO("Lista con Datos", "/proyecto_yates/UsuarioServlet?action=lista1"),
+                                new PanelBotonDTO("Edición", "/proyecto_yates/UsuarioServlet?action=edicion"),
+                                new PanelBotonDTO("Eliminar", "/proyecto_yates/UsuarioServlet?action=delete"),
+                                new PanelBotonDTO("Main", "/proyecto_yates/UsuarioServlet?action=main")
+                        )),
+                        // ==========================
+                        //        YATE SERVLET
+                        // ==========================
+                        new PanelSeccionDTO("YateServlet", List.of(
+                                new PanelBotonDTO("Formulario", "/proyecto_yates/YateServlet?action=formulario"),
+                                new PanelBotonDTO("Lista", "/proyecto_yates/YateServlet?action=lista"),
+                                new PanelBotonDTO("Lista con Datos", "/proyecto_yates/YateServlet?action=lista1"),
+                                new PanelBotonDTO("Edición", "/proyecto_yates/YateServlet?action=edicion"),
+                                new PanelBotonDTO("Eliminar", "/proyecto_yates/YateServlet?action=delete"),
+                                new PanelBotonDTO("Main", "/proyecto_yates/YateServlet?action=main")
+                        )),
+                        // ==========================
+                        //        ZONA SERVLET
+                        // ==========================
+                        new PanelSeccionDTO("ZonaServlet", List.of(
+                                new PanelBotonDTO("Formulario", "/proyecto_yates/ZonaServlet?action=formulario"),
+                                new PanelBotonDTO("Lista", "/proyecto_yates/ZonaServlet?action=lista"),
+                                new PanelBotonDTO("Lista con Datos", "/proyecto_yates/ZonaServlet?action=lista1"),
+                                new PanelBotonDTO("Edición", "/proyecto_yates/ZonaServlet?action=edicion"),
+                                new PanelBotonDTO("Eliminar", "/proyecto_yates/ZonaServlet?action=delete"),
+                                new PanelBotonDTO("Main", "/proyecto_yates/ZonaServlet?action=main")
                         ))
                 )
         );
+
     }
 }
