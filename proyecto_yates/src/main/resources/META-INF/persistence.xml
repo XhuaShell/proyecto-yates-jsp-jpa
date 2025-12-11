@@ -7,8 +7,6 @@
   <persistence-unit name="YatePU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-    <!-- ELIMINADO: NO USAMOS JNDI CUANDO CORRES POR MAVEN -->
-
     <!-- ENTIDADES -->
     <class>com.yates.proyecto_yates.model.entity.UsuarioEntity</class>
     <class>com.yates.proyecto_yates.model.entity.ZonaEntity</class>
@@ -20,6 +18,18 @@
 
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3300/club_yates_db?serverTimezone=UTC"/>
+      <property name="jakarta.persistence.jdbc.user" value="administrator"/>
+      <property name="jakarta.persistence.jdbc.password" value="123456"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+    
+    <!--
+    <properties>
+      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mysqlYate?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
       <property name="jakarta.persistence.jdbc.password" value=""/>
@@ -29,6 +39,7 @@
       <property name="hibernate.format_sql" value="true"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
     </properties>
+    -->
   </persistence-unit>
 
 </persistence>

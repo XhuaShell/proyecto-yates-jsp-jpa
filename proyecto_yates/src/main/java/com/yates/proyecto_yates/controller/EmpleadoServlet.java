@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package com.yates.proyecto_yates.controller;
 
 import java.io.IOException;
@@ -12,28 +8,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author krate
- */
-
 @WebServlet(name = "EmpleadoServlet", urlPatterns = {"/EmpleadoServlet"})
 public class EmpleadoServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -49,8 +30,7 @@ public class EmpleadoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Leer el parámetro action
-        String action = request.getParameter("action");
+         String action = request.getParameter("action");
 
         if (action == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro 'action'");
@@ -112,7 +92,6 @@ public class EmpleadoServlet extends HttpServlet {
 
     private void getLista(HttpServletRequest req, HttpServletResponse res) {
         // GET /AmarreServlet?action=lista&id=1
-
     }
 
     private void create(HttpServletRequest req, HttpServletResponse res) {
