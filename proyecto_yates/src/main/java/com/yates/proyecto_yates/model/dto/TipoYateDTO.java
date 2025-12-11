@@ -19,6 +19,14 @@ public class TipoYateDTO {
         this.descripcion = descripcion;
     }
 
+    public Long getNum_tipo_yate() {
+        return num_tipo_yate;
+    }
+
+    public void setNum_tipo_yate(Long num_tipo_yate) {
+        this.num_tipo_yate = num_tipo_yate;
+    }
+    
     public static TipoYateDTO fromEntity(TipoYateEntity entity) {
         return new TipoYateDTO(
                 entity.getNum_tipo_yate(),
