@@ -1,27 +1,28 @@
 <%-- 
-    Document   : Deleter
-    Created on : 10 dic 2025, 9:57:54
+    Document   : DeleterAmarre
+    Created on : 10 dic 2025
     Author     : krate
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Eliminar Amarre</title>
-</head>
-<body>
-  <h1>Eliminar Amarre</h1>
+    <head>
+        <title>Eliminar Amarre</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container py-5" style="max-width: 500px;">
+            <h1 class="mb-4 text-center">Eliminar Amarre</h1>
 
-  <form action="AmarreServlet?action=delete" method="POST">
-    <input type="hidden" name="_method" value="DELETE">
+            <form action="${pageContext.request.contextPath}/AmarreServlet?action=delete" method="POST">
+                <div class="mb-3">
+                    <label for="num_amarre" class="form-label">Número de Amarre</label>
+                    <input type="number" id="num_amarre" name="num_amarre" class="form-control" required>
+                </div>
 
-    <label for="num_amarre">Código de Amarre:</label>
-    <input type="text" id="num_amarre" name="num_amarre" required><br><br>
-
-    <button type="submit">Eliminar</button>
-  </form>
-
-</body>
+                <button type="submit" class="btn btn-danger w-100">Eliminar</button>
+            </form>
+        </div>
+    </body>
 </html>
-

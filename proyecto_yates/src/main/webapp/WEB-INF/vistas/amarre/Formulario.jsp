@@ -1,74 +1,24 @@
-<%-- 
-    Document   : Formulario
-    Created on : 10 dic 2025, 10:53:48
-    Author     : krate
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Registrar Amarre</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     </head>
     <body>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-        <div class="card shadow-sm rounded p-4">
-            <h2 class="mb-4 text-center">Registrar Amarre</h2>
+        <div class="container py-5" style="max-width: 600px;">
+            <h1 class="mb-4 text-center fw-semibold">Registrar Amarre</h1>
 
             <form action="${pageContext.request.contextPath}/AmarreServlet?action=formulario" method="POST">
 
                 <div class="mb-3">
-                    <label for="num_amarre" class="form-label">Código de Amarre</label>
-                    <input
-                        type="number"
-                        class="form-control"
-                        id="num_amarre"
-                        name="num_amarre"
-                        required
-                        />
+                    <label for="id_zona" class="form-label">ID Zona</label>
+                    <input type="text" id="id_zona" name="id_zona" class="form-control" maxlength="1">
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_zona" class="form-label">ID de Zona</label>
-                    <select name="id_zona" id="id_zona" class="form-select" required>
-
-                        <c:forEach var="zona" items="${zonas}">
-                            <option value="${zona.id_zona}">
-                                ${zona.id_zona}
-                            </option>
-                        </c:forEach>
-
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="usuario_propietario_cedula" class="form-label">
-                        Cédula del Propietario
-                    </label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="usuario_propietario_cedula"
-                        name="usuario_propietario_cedula"
-                        />
-                </div>
-
-                <div class="mb-3">
-                    <label for="fecha_compra" class="form-label">Fecha de Compra</label>
-                    <input
-                        type="date"
-                        class="form-control"
-                        id="fecha_compra"
-                        name="fecha_compra"
-                        />
-                </div>
-
-                <button type="submit" class="btn btn-dark w-100">Enviar</button>
+                <button type="submit" class="btn btn-primary w-100 py-2">Enviar</button>
             </form>
         </div>
-
-
     </body>
 </html>

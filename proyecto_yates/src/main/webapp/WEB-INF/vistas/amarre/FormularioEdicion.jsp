@@ -1,36 +1,47 @@
-<%-- 
-    Document   : FormularioEdicion
-    Created on : 10 dic 2025, 10:54:00
-    Author     : krate
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Formulario Actualización Amarre</title>
+    <title>Editar Amarre</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-  <h1>Editar Amarre</h1>
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Editar Información del Amarre</h4>
+        </div>
 
-  <form action="${pageContext.request.contextPath}/AmarreServlet?action=edicion" method="POST">
+        <div class="card-body">
+            <form action="${pageContext.request.contextPath}/AmarreServlet?action=edicion" method="POST">
+                <div class="mb-3">
+                    <label for="num_amarre" class="form-label">Número de Amarre (obligatorio)</label>
+                    <input 
+                        type="number" 
+                        class="form-control" 
+                        id="num_amarre" 
+                        name="num_amarre" 
+                        required
+                        >
+                </div>
 
-    <label for="num_amarre">Código de Amarre:</label>
-    <input type="text" id="num_amarre" name="num_amarre" required><br><br>
+                <div class="mb-3">
+                    <label for="id_zona" class="form-label">ID Zona (opcional)</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="id_zona" 
+                        name="id_zona" 
+                        maxlength="1"
+                        >
+                </div>
 
-    <label for="id_zona">ID Zona:</label>
-    <input type="text" id="id_zona" name="id_zona"><br><br>
-
-    <label for="usuario_propietario_cedula">Cédula del Propietario:</label>
-    <input type="text" id="usuario_propietario_cedula" name="usuario_propietario_cedula"><br><br>
-
-    <label for="fecha_compra">Fecha de Compra:</label>
-    <input type="date" id="fecha_compra" name="fecha_compra"><br><br>
-
-    <button type="submit">Enviar</button>
-
-  </form>
-
+                <button type="submit" class="btn btn-primary w-100">
+                    Guardar Cambios
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
-

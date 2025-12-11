@@ -1,57 +1,59 @@
 <%-- 
-    Document   : Lista
-    Created on : 10 dic 2025, 10:54:07
+    Document   : ListaAmarres
+    Created on : 10 dic 2025
     Author     : krate
 --%>
 
-<%@page import="java.util.List"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.yates.proyecto_yates.model.dto.AmarreDTO" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Lista de Amarres</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     </head>
     <body>
-        <h1 class="mb-4">Lista de Amarres Registrados</h1>
+        <div class="container mt-4">
+            <h1 class="mb-4 text-center">Lista de Amarres</h1>
 
-        <div class="table-responsive shadow-sm rounded">
-            <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Número de Amarre</th>
-                        <th>ID de Zona</th>
-                        <th>Cédula del Propietario</th>
-                        <th>Fecha de Compra</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <%
-                        List<com.yates.proyecto_yates.model.entity.AmarreEntity> objetosCons
-                                = (List<com.yates.proyecto_yates.model.entity.AmarreEntity>) request.getAttribute("objetosCons");
-
-                        if (objetosCons != null) {
-                            for (com.yates.proyecto_yates.model.entity.AmarreEntity s : objetosCons) {
-                    %>
-                    <tr>
-                        <td><%= s.getNum_amarre()%></td>
-                        <td><%= s.getZona()%></td>
-                    </tr>
-                    <%
+            <div class="table-responsive shadow-sm rounded">
+                <table class="table table-striped table-hover align-middle text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Número de Amarre</th>
+                            <th>ID Zona</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            List<AmarreDTO> amarres = (List<AmarreDTO>) request.getAttribute("objetosCons");
+                            if (amarres != null) {
+                                for (AmarreDTO a : amarres) {
+                        %>
+                        <tr>
+                            <td><%= a.getNum_amarre()%></td>
+                            <td><%= a.getId_zona()%></td>
+                        </tr>
+                        <%
                             }
-                        }
-                    %>
-                </tbody>
-            </table>
+                        } else {
+                        %>
+                        <tr>
+                            <td colspan="2">No hay amarres registrados.</td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="<%= request.getContextPath()%>/AmarreServlet?action=lista1" class="btn btn-primary">
+                    Cargar lista
+                </a>
+            </div>
         </div>
-
-        <nav class="nav mb-4 p-2 bg-dark rounded shadow-sm">
-            <a href="${pageContext.request.contextPath}/AmarreServlet?action=lista1" class="btn btn-outline-light me-2">Cargar lista</a>
-            <a href="${pageContext.request.contextPath}/AmarreServlet?action=formulario" class="btn btn-outline-light me-2">Agregar Nuevo Amarre</a>
-            <a href="#" class="btn btn-outline-light me-2">Listar amarres por dueño</a>
-            <a href="#" class="btn btn-outline-light">Listar amarres por zona</a>
-        </nav>
-
     </body>
 </html>
